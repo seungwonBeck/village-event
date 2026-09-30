@@ -165,6 +165,16 @@ export default function AdminPage() {
             <Settings className="w-4 h-4" />
             <span>행사 데이터 편집</span>
           </Link>
+          <button
+            type="button"
+            onClick={async () => {
+              await fetch("/api/admin-logout", { method: "POST" });
+              window.location.href = "/admin/login";
+            }}
+            className="pop-btn px-3.5 py-1.5 bg-white text-xs hover:bg-neutral-50"
+          >
+            로그아웃
+          </button>
           <Link
             href="/presentation"
             target="_blank"
