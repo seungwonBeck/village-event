@@ -11,22 +11,41 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
 
+    // 공백 제거, 전각 숫자(９９６５)는 일반 숫자로 바꿔서 입력 실수를 줄인다
+    const cleaned = password
+      .trim()
+      .replace(/[０-９]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0));
+
     const res = await fetch("/api/admin-login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
+      body: JSON.stringify({ password: cleaned }),
     });
 
     if (res.ok) {
-      // 쿼리의 next 경로(/admin 하위만 허용)로 이동
-      const next = new URLSearchParams(window.location.search).get("next");
-      window.location.href = next && next.startsWith("/admin") ? next : "/admin";
+      // 브라우저가 로그인 쿠키를 실제로 저장했는지 확인 (인앱 브라우저·시크릿 모드에서는 막힐 수 있음)
+      const check = await fetch("/api/admin-login", { cache: "no-store" })
+        .then((r) => r.json() as Promise<{ authed: boolean }>)
+        .catch(() => ({ authed: false }));
+
+      if (check.authed) {
+        // 쿼리의 next 경로(/admin 하위만 허용)로 이동
+        const next = new URLSearchParams(window.location.search).get("next");
+        window.location.href = next && next.startsWith("/admin") ? next : "/admin";
+        return;
+      }
+
+      setError(
+        "비밀번호는 맞는데 브라우저가 로그인 정보(쿠키)를 막고 있어요. 카카오톡 안에서 열었다면 크롬이나 사파리로 열어 주세요."
+      );
+      setIsLoading(false);
       return;
     }
 
@@ -52,7 +71,7 @@ export default function AdminLoginPage() {
         </label>
         <input
           id="admin-password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           inputMode="numeric"
           autoComplete="current-password"
           autoFocus
@@ -61,6 +80,16 @@ export default function AdminLoginPage() {
           placeholder="비밀번호"
           className="mt-5 w-full rounded-2xl border-3 border-black bg-neutral-50 px-4 py-3 text-center text-lg tracking-[0.3em] focus:outline-none focus:ring-4 focus:ring-shin-sky"
         />
+
+        <label className="mt-3 flex items-center justify-center gap-2 text-sm text-ink/70">
+          <input
+            type="checkbox"
+            checked={showPassword}
+            onChange={(e) => setShowPassword(e.target.checked)}
+            className="h-4 w-4"
+          />
+          입력한 비밀번호 보기
+        </label>
 
         {error && (
           <p role="alert" className="mt-3 text-sm text-shin-red">
