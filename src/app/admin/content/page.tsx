@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import UiScale from "@/components/ui-scale";
 import { event, EventInfo } from "@/data/event";
 import { groups, GroupItem } from "@/data/groups";
 import { defaultPrayerTopics, PrayerTopic } from "@/data/prayer";
@@ -39,8 +38,7 @@ export default function AdminContentPage() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-100 p-6 md:px-[80px] select-none">
-      <UiScale />
+    <div className="min-h-screen bg-neutral-100 p-4 select-none">
       <div className="max-w-3xl mx-auto">
         {/* 상단 내비게이션 */}
         <div className="flex items-center justify-between mb-6">
