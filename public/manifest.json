@@ -1,0 +1,22 @@
+{
+  "name": "못말리는 령고을",
+  "short_name": "령고을",
+  "description": "대구동신교회 청년 아포슬 3팀 행사 프레젠테이션 & 모바일 라이브 참여",
+  "start_url": "/live",
+  "display": "standalone",
+  "background_color": "#FFFBEA",
+  "theme_color": "#FFF34F",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/characters/shinchan.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/characters/shinchan.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

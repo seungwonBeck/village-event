@@ -1,0 +1,249 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 에이투지체: 사이트 전체 단일 글꼴 (100~900 아홉 굵기) */
+@font-face {
+  font-family: 'A2Z';
+  src: url('/fonts/a2z/A2Z-1Thin.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'A2Z';
+  src: url('/fonts/a2z/A2Z-2ExtraLight.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'A2Z';
+  src: url('/fonts/a2z/A2Z-3Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'A2Z';
+  src: url('/fonts/a2z/A2Z-4Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'A2Z';
+  src: url('/fonts/a2z/A2Z-5Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'A2Z';
+  src: url('/fonts/a2z/A2Z-6SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'A2Z';
+  src: url('/fonts/a2z/A2Z-7Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'A2Z';
+  src: url('/fonts/a2z/A2Z-8ExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'A2Z';
+  src: url('/fonts/a2z/A2Z-9Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-main: 'A2Z', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+* {
+  font-family: var(--font-main);
+  /* Jua는 400 굵기만 있어 font-black이 가짜 볼드로 뭉개지지 않게 막는다 */
+  font-synthesis: none;
+}
+
+/* 글자 위계: 제목 800 / 소제목 700 / 본문 500 (utility의 font-black 등이 섞여도 역할별로 통일) */
+h1, h2 { font-weight: 800 !important; }
+h3, h4, h5, h6 { font-weight: 700 !important; }
+p, li, dd, blockquote { font-weight: 500 !important; }
+
+body {
+  font-family: var(--font-main);
+  background-color: #FFF4C2;
+  color: #3A2A1E;
+  overflow-x: hidden;
+  /* 한글이 단어 중간에서 끊기지 않게 하고, 너무 긴 덩어리만 강제로 줄바꿈 */
+  font-weight: 500;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  /* 전 페이지 공통 자간/행간 (어드민 포함) */
+  letter-spacing: -0.01em;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 팝아트 / 레트로 크레용 네오 브루탈리즘 유틸리티 */
+@layer components {
+  .pop-card {
+    @apply bg-white border-3 border-black rounded-3xl shadow-pop transition-transform duration-150;
+  }
+  .pop-card-hover {
+    @apply hover:-translate-y-1 hover:shadow-pop-lg active:translate-y-0 active:shadow-pop-hover;
+  }
+  .pop-btn {
+    @apply font-bold border-3 border-black rounded-2xl shadow-pop transition-all duration-150 active:translate-y-0.5 active:shadow-pop-sm flex items-center justify-center gap-2;
+  }
+  .pop-tag {
+    @apply inline-flex items-center px-3 py-1 font-bold border-2 border-black rounded-full text-xs shadow-pop-sm;
+  }
+}
+
+/* 종이 질감 미세 도트 배경 패턴 */
+.paper-dots {
+  background-image: radial-gradient(#e6d27a 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
+}
+
+/* 스크롤바 커스텀 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FFF4C2;
+}
+::-webkit-scrollbar-thumb {
+  background: #3A2A1E;
+  border-radius: 4px;
+}
+
+/* 플로팅 리액션 애니메이션 */
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(0.6) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(-80px) scale(1.2) rotate(-8deg);
+  }
+  50% {
+    transform: translateY(-380px) scale(1) rotate(8deg);
+  }
+  80% {
+    opacity: 0.9;
+    transform: translateY(-700px) scale(0.9) rotate(-5deg);
+  }
+  100% {
+    transform: translateY(-950px) scale(0.8) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+.animate-float-up {
+  animation: floatUp 3.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* 감성 레트로 네오 브루탈리즘 유틸리티 (메인 초대장 & 페이지 공용) */
+.paper-grain { background-color: #f3ede3; }
+.title-ink { -webkit-text-stroke: .055em #3A2A1E; paint-order: stroke fill; text-shadow: .025em .045em 0 #3A2A1E; }
+.outline-type { -webkit-text-stroke: 1.5px #3A2A1E; color: transparent; }
+.display-type { font-weight: 900; letter-spacing: -.075em; line-height: 1.06; }
+.eyebrow { font-size: .75rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.soft-card { border: 1px solid #3A2A1E; border-radius: 1rem; background: #fffdf9; box-shadow: 3px 3px 0 #3A2A1E; }
+.pink-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: .7rem; min-height: 3.1rem; border: 1px solid #3A2A1E; border-radius: 999px; padding: .8rem 1.6rem; background: #3A2A1E; color: #fffdf9; font-weight: 700; transition: transform .2s, background .2s, color .2s;
+}
+.pink-button:hover { background: #ffda44; color: #3A2A1E; transform: translateY(-3px); }
+.pink-button:active { transform: translateY(0); }
+.pink-button:disabled { opacity: .45; transform: none; }
+.outline-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 3rem; border: 1px solid #3A2A1E; border-radius: 999px; padding: .75rem 1.2rem; background: transparent; font-weight: 700;
+}
+.outline-button:hover { background: #ffda44; }
+.outline-button:disabled { opacity: .4; }
+.form-field { width: 100%; border: 1px solid #3A2A1E; border-radius: .7rem; padding: .85rem 1rem; background: #fffdf9; }
+.form-field:focus { outline: 3px solid #ffda44; outline-offset: 2px; }
+.slide-enter { animation: slide-in .4s ease-out; }
+.reaction-rise { animation: reaction-up 2s ease-out forwards; }
+.float-gently { animation: float-gently 5s ease-in-out infinite; }
+.marquee-track { animation: marquee 26s linear infinite; }
+.reveal-visible { animation: reveal-in .85s cubic-bezier(.16,1,.3,1) both; }
+
+@keyframes slide-in { from { opacity: .3; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes reveal-in { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes float-gently { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-14px) rotate(3deg); } }
+@keyframes marquee { to { transform: translateX(-50%); } }
+@keyframes reaction-up { from { transform: translateY(0) scale(.8); opacity: 1; } to { transform: translateY(-65vh) scale(1.8) rotate(15deg); opacity: 0; } }
+
+
+/* ---- 짱구 공책/크레용 무드 ---- */
+/* 줄 공책 속지 */
+.notebook { background-color: #fffdf0; background-image: repeating-linear-gradient(transparent 0 31px, #bfe3f5 31px 32px); }
+/* 떡잎유치원 칠판 */
+.chalkboard { background-color: #2f6b4f; background-image: radial-gradient(rgba(255,255,255,.09) 1.5px, transparent 1.5px); background-size: 16px 16px; }
+/* 포스터 타이틀처럼 글자마다 갈색 외곽선 */
+.letter-stroke { -webkit-text-stroke: .1em #3A2A1E; paint-order: stroke fill; text-shadow: .04em .06em 0 #3A2A1E; }
+/* 흰 외곽선 + 갈색 그림자 (어두운/밝은 배경 모두에서 또렷한 제목) */
+.letter-outline-white { -webkit-text-stroke: .09em #ffffff; paint-order: stroke fill; text-shadow: .04em .06em 0 #3A2A1E; }
+
+/* 마스킹 테이프 */
+.tape { background-color: rgba(255, 210, 63, .85); background-image: repeating-linear-gradient(90deg, rgba(255,255,255,.35) 0 4px, transparent 4px 9px); }
+/* 스프링 노트 구멍 */
+.spiral { background-image: radial-gradient(circle at 50% 50%, #3A2A1E 0 5px, transparent 6px); background-size: 28px 18px; background-repeat: repeat-x; }
+/* 크레용으로 그은 밑줄 */
+.crayon-underline { background-image: linear-gradient(transparent 68%, rgba(255,210,63,.45) 68% 94%, transparent 94%); }
+
+/* ---- 찬양 슬라이드: 차분한 무채색 배경 ---- */
+/* 차콜 그레이에 위쪽에서 은은하게 퍼지는 흰 빛 */
+.holy-bg {
+  background-color: #1c1c1e;
+  background-image:
+    radial-gradient(ellipse at 50% -10%, rgba(255, 255, 255, .16) 0%, rgba(255, 255, 255, .05) 38%, transparent 68%),
+    linear-gradient(180deg, #232326 0%, #1a1a1c 100%);
+}
+
+/* 테마 배경 그림 위에서도 제목·캐릭터가 또렷하게 보이는 흰 글씨판 */
+@layer components {
+  .plate {
+    @apply border-3 border-black bg-white/90 rounded-2xl shadow-pop-sm;
+  }
+}
+
+/* 프레젠테이션·어드민: 1920px에서 18px(=1.125배), 1280px 이하는 기본 16px */
+html.ui-scale {
+  font-size: clamp(16px, 0.9375vw, 36px);
+}
+/* 참가자 페이지(join/live): 데스크톱에서만 0.75배(12px), 휴대폰은 기본 16px */
+@media (min-width: 1024px) {
+  html.ui-scale-compact {
+    font-size: 12px;
+  }
+}

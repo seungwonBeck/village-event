@@ -1,0 +1,29 @@
+# 의존성 / 빌드 결과
+node_modules
+.next
+out
+*.tsbuildinfo
+next-env.d.ts
+
+# 비밀 값 (절대 커밋 금지)
+.env
+.env.*
+!.env.example
+
+# 프로젝트와 무관한 작업 도구 폴더
+skills-main
+superpowers-main
+artifacts-builder
+canvas-design
+image-enhancer
+theme-factory
+webapp-testing
+.claude
+
+# OS / 에디터
+.DS_Store
+Thumbs.db
+
+# npm만 사용 (pnpm 잠금 파일은 배포 시 충돌)
+pnpm-lock.yaml
+pnpm-workspace.yaml
