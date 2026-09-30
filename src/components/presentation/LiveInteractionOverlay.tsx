@@ -70,7 +70,7 @@ export default function LiveInteractionOverlay({ eventState }: LiveInteractionOv
     <>
       {/* 1) 실시간 투표/퀴즈 모달 (관리자가 투표를 오픈했을 때 노출) */}
       {eventState.isVoteOpen && activeQuiz && (
-        <div className="absolute top-14 right-10 z-40 max-w-md w-full animate-in fade-in slide-in-from-top-4 duration-200">
+        <div className="absolute inset-x-3 top-14 z-40 max-h-[75vh] overflow-y-auto animate-in fade-in slide-in-from-top-4 duration-200 sm:inset-x-auto sm:right-10 sm:w-full sm:max-w-md">
           <div className="pop-card bg-white p-5 border-4 border-black shadow-pop-lg">
             <div className="flex items-center justify-between mb-2">
               <span

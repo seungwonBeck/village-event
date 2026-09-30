@@ -39,7 +39,8 @@ export default function CommunitySlide() {
           </h2>
         </div>
 
-        <div className="flex flex-nowrap items-center justify-center gap-1.5 overflow-x-auto py-1">
+        <div className="overflow-x-auto py-1">
+        <div className="mx-auto flex w-max flex-nowrap items-center gap-1.5">
           {groups.map((g, idx) => {
             const isSpecial = g.roleTitle === "을장님";
             const isSelected = selectedIdx === idx;
@@ -61,6 +62,7 @@ export default function CommunitySlide() {
               </button>
             );
           })}
+        </div>
         </div>
       </div>
 
@@ -129,7 +131,7 @@ export default function CommunitySlide() {
       </div>
 
       {/* 하단 네비게이션 */}
-      <div className="plate flex items-center justify-between px-4 py-2 text-xs font-bold text-neutral-600">
+      <div className="plate flex items-center justify-center px-4 py-2 text-xs font-bold text-neutral-600">
         <div className="flex items-center gap-3">
           <button
             onClick={handlePrev}
@@ -150,7 +152,6 @@ export default function CommunitySlide() {
           </button>
         </div>
 
-        <span>* 명단은 data/groups.ts 또는 /admin/content에서 쉽게 관리하실 수 있습니다.</span>
       </div>
     </div>
   );

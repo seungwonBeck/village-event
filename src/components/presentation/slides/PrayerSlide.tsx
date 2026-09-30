@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { event } from "@/data/event";
 import { defaultPrayerTopics, PrayerTopic } from "@/data/prayer";
+import { realtimeHub } from "@/lib/realtime";
+import { EventState } from "@/types";
 
 /**
  * 08 PRAYER SLIDE
@@ -11,6 +13,20 @@ import { defaultPrayerTopics, PrayerTopic } from "@/data/prayer";
 export default function PrayerSlide() {
   const [topics, setTopics] = useState<PrayerTopic[]>(defaultPrayerTopics);
   const [selectedIdx, setSelectedIdx] = useState<number>(0);
+
+  // 선택한 기도 제목 번호를 휴대폰 콘솔과 공유
+  useEffect(() => {
+    const apply = (st: EventState) => {
+      if (typeof st.prayerTopicIndex === "number") setSelectedIdx(st.prayerTopicIndex);
+    };
+    apply(realtimeHub.getEventState());
+    return realtimeHub.subscribe("state_changed", apply);
+  }, []);
+
+  const selectTopic = (idx: number) => {
+    setSelectedIdx(idx);
+    realtimeHub.updateEventState({ prayerTopicIndex: idx });
+  };
 
   useEffect(() => {
     // 로컬스토리지에 저장된 커스텀 기도 제목이 있다면 불러오기
@@ -39,21 +55,21 @@ export default function PrayerSlide() {
       if ((e.key === "ArrowRight" || e.key === " ") && !isLast) {
         e.preventDefault();
         e.stopImmediatePropagation();
-        setSelectedIdx((prev) => prev + 1);
+        selectTopic(selectedIdx + 1);
       } else if (e.key === "ArrowLeft" && !isFirst) {
         e.preventDefault();
         e.stopImmediatePropagation();
-        setSelectedIdx((prev) => prev - 1);
+        selectTopic(selectedIdx - 1);
       }
     };
     window.addEventListener("keydown", handleKeyDown, true);
     return () => window.removeEventListener("keydown", handleKeyDown, true);
-  }, [isFirst, isLast]);
+  }, [isFirst, isLast, selectedIdx]);
 
   if (!current) return null;
 
   return (
-    <div className="relative isolate flex h-full w-full select-none flex-col justify-between gap-6 bg-[#000000]/60 px-6 py-6 text-white [container-type:inline-size] sm:px-12 sm:py-8 md:px-[80px]">
+    <div className="relative isolate flex h-full w-full select-none flex-col justify-between gap-6 bg-[#000000]/60 px-6 pt-6 pb-28 text-white [container-type:inline-size] sm:px-12 sm:pt-8 sm:pb-28 md:px-[80px] xl:pb-8">
       {/* 상단: 행사 라벨 + 기도 제목 선택 */}
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <span className="text-sm text-white/70 sm:text-base">{event.eventLabel}</span>
@@ -62,7 +78,7 @@ export default function PrayerSlide() {
           {topics.map((topic, idx) => (
             <button
               key={topic.id}
-              onClick={() => setSelectedIdx(idx)}
+              onClick={() => selectTopic(idx)}
               className={`rounded-full border px-4 py-1.5 text-sm transition-colors sm:text-base ${
                 selectedIdx === idx
                   ? "border-white bg-white text-neutral-900"

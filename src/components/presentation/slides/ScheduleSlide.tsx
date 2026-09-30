@@ -154,9 +154,9 @@ export default function ScheduleSlide({ eventState }: ScheduleSlideProps) {
       </div>
 
       {/* 하단 여백 가이드 */}
-      <div className="plate flex items-center justify-between px-4 py-2 text-xs font-bold text-neutral-600">
+      <div className="plate flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-2 text-xs font-bold text-neutral-600">
         <span>* 진행 상황에 따라 시간이 약간 변동될 수 있습니다.</span>
-        <span>키보드 방향키(◀, ▶) 또는 스페이스바로 슬라이드 이동</span>
+        <span className="hidden sm:inline">키보드 방향키(◀, ▶) 또는 스페이스바로 슬라이드 이동</span>
       </div>
     </div>
   );

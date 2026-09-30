@@ -34,10 +34,10 @@ export default function PresentationPage() {
     <TransitionSlide key="transition-icebreak" eventState={eventState} programId="opening" titleOverride="조원 인사 & 아이스브레이킹" characterSrc="/characters/cheolsu.png" characterAlt="철수" />,
     <TransitionSlide key="transition-lunch" eventState={eventState} programId="lunch" characterSrc="/characters/maenggu.png" characterAlt="맹구" />,
     <RecreationSlide key="recreation" />,
-    <WorshipSlide key="worship" />,
+    <WorshipSlide key="worship" slideKey="worship" />,
     <MessageSlide key="message" />,
     <PrayerSlide key="prayer" />,
-    <WorshipSlide key="prayer-song" playlist={prayerPlaylist} footerLabel="기도회 찬양" />,
+    <WorshipSlide key="prayer-song" slideKey="prayer-song" playlist={prayerPlaylist} footerLabel="기도회 찬양" />,
     <CommunitySlide key="community" />,
     <EndingSlide key="ending" />,
   ];

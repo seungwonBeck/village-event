@@ -47,5 +47,9 @@ export interface EventState {
   isQuizRevealed: boolean;
   isReactionEnabled: boolean;
   isVoteOpen: boolean;
+  // 찬양/기도회 찬양 슬라이드별 가사 위치 (곡 번호, 가사 페이지) - 휴대폰 콘솔과 공유
+  lyricPos?: Record<string, { song: number; page: number }>;
+  // 합심 기도 슬라이드에서 선택한 기도 제목 번호
+  prayerTopicIndex?: number;
   updatedAt: number;
 }

@@ -26,7 +26,7 @@ export const defaultEventState: EventState = {
   activeQuizId: "quiz-1",
   isQuizRevealed: false,
   isReactionEnabled: true,
-  isVoteOpen: true,
+  isVoteOpen: false, // 퀴즈/투표 카드는 진행자가 열 때만 프로젝터에 표시
   updatedAt: Date.now(),
 };
 
@@ -48,6 +48,7 @@ class RealtimeHub {
       this.broadcastChannel.onmessage = (event) => {
         const { type, payload } = event.data || {};
         if (type) {
+          this.persistRemoteState(type, payload);
           this.emitLocal(type, payload);
         }
       };
@@ -71,10 +72,21 @@ class RealtimeHub {
       channel
         .on("broadcast", { event: "*" }, (payload) => {
           if (payload.event && payload.payload) {
+            this.persistRemoteState(payload.event, payload.payload);
             this.emitLocal(payload.event, payload.payload);
           }
         })
         .subscribe();
+    }
+  }
+
+  // 다른 기기에서 온 행사 상태를 이 기기 저장소에도 반영 (이후 부분 업데이트가 최신 상태 위에 쌓이도록)
+  private persistRemoteState(eventType: string, payload: unknown) {
+    if (eventType !== "state_changed" || typeof window === "undefined" || !payload) return;
+    try {
+      localStorage.setItem(STORAGE_KEYS.EVENT_STATE, JSON.stringify(payload));
+    } catch {
+      // 저장 실패는 무시
     }
   }
 

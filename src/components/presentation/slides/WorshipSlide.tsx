@@ -3,11 +3,15 @@
 import React, { useState, useEffect } from "react";
 import { worshipPlaylist, WorshipSong, SongSlide } from "@/data/worship";
 import { event } from "@/data/event";
+import { realtimeHub } from "@/lib/realtime";
+import { EventState } from "@/types";
 import { Music, ChevronLeft, ChevronRight, Disc } from "lucide-react";
 
 interface WorshipSlideProps {
   playlist?: WorshipSong[];
   footerLabel?: string;
+  // 휴대폰 콘솔과 가사 위치를 공유하는 이름 (찬양 / 기도회 찬양을 구분)
+  slideKey?: string;
 }
 
 /**
@@ -17,9 +21,32 @@ interface WorshipSlideProps {
 export default function WorshipSlide({
   playlist = worshipPlaylist,
   footerLabel = `${event.ministry} 찬양 콘티`,
+  slideKey = "worship",
 }: WorshipSlideProps) {
-  const [songIndex, setSongIndex] = useState<number>(0);
-  const [slideIndex, setSlideIndex] = useState<number>(0);
+  const [pos, setPos] = useState<{ song: number; page: number }>({ song: 0, page: 0 });
+  const songIndex = pos.song;
+  const slideIndex = pos.page;
+
+  // 공유된 가사 위치를 읽고, 다른 기기(휴대폰)가 바꾸면 따라간다
+  useEffect(() => {
+    const apply = (st: EventState) => {
+      const shared = st.lyricPos?.[slideKey];
+      if (shared) {
+        setPos((prev) =>
+          prev.song === shared.song && prev.page === shared.page ? prev : { song: shared.song, page: shared.page }
+        );
+      }
+    };
+    apply(realtimeHub.getEventState());
+    return realtimeHub.subscribe("state_changed", apply);
+  }, [slideKey]);
+
+  // 가사 위치 이동: 화면에 반영하고 다른 기기에도 알린다
+  const goTo = (song: number, page: number) => {
+    setPos({ song, page });
+    const current = realtimeHub.getEventState();
+    realtimeHub.updateEventState({ lyricPos: { ...(current.lyricPos ?? {}), [slideKey]: { song, page } } });
+  };
 
   const currentSong: WorshipSong = playlist[songIndex] || playlist[0];
   const totalSlides = currentSong.slides.length;
@@ -31,20 +58,18 @@ export default function WorshipSlide({
   // 가사 이전/다음 핸들러
   const handleNextSlide = () => {
     if (slideIndex < totalSlides - 1) {
-      setSlideIndex(slideIndex + 1);
+      goTo(songIndex, slideIndex + 1);
     } else if (songIndex < playlist.length - 1) {
-      setSongIndex(songIndex + 1);
-      setSlideIndex(0);
+      goTo(songIndex + 1, 0);
     }
   };
 
   const handlePrevSlide = () => {
     if (slideIndex > 0) {
-      setSlideIndex(slideIndex - 1);
+      goTo(songIndex, slideIndex - 1);
     } else if (songIndex > 0) {
       // 이전 곡의 마지막 가사로 이동
-      setSlideIndex(playlist[songIndex - 1].slides.length - 1);
-      setSongIndex(songIndex - 1);
+      goTo(songIndex - 1, playlist[songIndex - 1].slides.length - 1);
     }
   };
 
@@ -71,7 +96,7 @@ export default function WorshipSlide({
   });
 
   return (
-    <div className="holy-bg relative isolate flex h-full w-full select-none flex-col justify-between gap-4 overflow-hidden px-5 py-5 text-white [container-type:inline-size] sm:px-12 sm:py-8 md:px-16">
+    <div className="holy-bg relative isolate flex h-full w-full select-none flex-col justify-between gap-4 overflow-hidden px-5 pt-5 pb-28 text-white [container-type:inline-size] sm:px-12 sm:pt-8 sm:pb-28 md:px-16 xl:pb-8">
       {/* 위아래 검정 그라디언트: 가사가 배경에 묻히지 않게 */}
       <div
         aria-hidden="true"
@@ -91,10 +116,7 @@ export default function WorshipSlide({
           {playlist.map((song, idx) => (
             <button
               key={song.id}
-              onClick={() => {
-                setSongIndex(idx);
-                setSlideIndex(0);
-              }}
+              onClick={() => goTo(idx, 0)}
               title={song.title}
               aria-label={`${idx + 1}번 곡 ${song.title}`}
               className={`flex h-8 w-8 items-center justify-center rounded-full border text-sm transition-colors sm:h-9 sm:w-9 sm:text-base ${
@@ -128,7 +150,7 @@ export default function WorshipSlide({
         {currentSong.slides.map((slide, idx) => (
           <button
             key={slide.slideIndex}
-            onClick={() => setSlideIndex(idx)}
+            onClick={() => goTo(songIndex, idx)}
             title={slide.lines.join(" ")}
             className={`max-w-[14rem] truncate rounded-full border px-3 py-1 text-[max(0.75rem,0.95cqw)] transition-colors ${
               slideIndex === idx

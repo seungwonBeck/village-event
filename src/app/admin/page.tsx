@@ -6,6 +6,8 @@ import { realtimeHub, defaultEventState } from "@/lib/realtime";
 import { EventState, Participant, AnonymousQuestion, TeamScore } from "@/types";
 import { defaultQuizzes } from "@/data/quiz";
 import { scheduleList } from "@/data/schedule";
+import { worshipPlaylist, prayerPlaylist } from "@/data/worship";
+import { defaultPrayerTopics } from "@/data/prayer";
 import {
   Users,
   MessageSquare,
@@ -21,18 +23,18 @@ import {
 
 // 슬라이드 바로가기 목록 (번호, 영문 이름, 한글 이름)
 const SLIDES = [
-  { no: "01", en: "INTRO", ko: "행사 안내 & QR" },
-  { no: "02", en: "SCHEDULE", ko: "시간표" },
-  { no: "03", en: "TRANSITION", ko: "프로그램 전환" },
-  { no: "04", en: "ICEBREAKING", ko: "조원 인사" },
-  { no: "05", en: "LUNCH", ko: "점심 시간" },
-  { no: "06", en: "RECREATION", ko: "게임 배틀" },
-  { no: "07", en: "WORSHIP", ko: "찬양 가사" },
-  { no: "08", en: "MESSAGE", ko: "말씀 - 세상의 빛" },
-  { no: "09", en: "PRAYER", ko: "합심 기도" },
-  { no: "10", en: "PRAYER WORSHIP", ko: "기도회 찬양" },
-  { no: "11", en: "COMMUNITY", ko: "사랑방 소개" },
-  { no: "12", en: "ENDING", ko: "마무리 & 사진" },
+  { no: "01", key: "intro", en: "INTRO", ko: "행사 안내 & QR" },
+  { no: "02", key: "schedule", en: "SCHEDULE", ko: "시간표" },
+  { no: "03", key: "transition", en: "TRANSITION", ko: "프로그램 전환" },
+  { no: "04", key: "icebreak", en: "ICEBREAKING", ko: "조원 인사" },
+  { no: "05", key: "lunch", en: "LUNCH", ko: "점심 시간" },
+  { no: "06", key: "recreation", en: "RECREATION", ko: "게임 배틀" },
+  { no: "07", key: "worship", en: "WORSHIP", ko: "찬양 가사" },
+  { no: "08", key: "message", en: "MESSAGE", ko: "말씀 - 세상의 빛" },
+  { no: "09", key: "prayer", en: "PRAYER", ko: "합심 기도" },
+  { no: "10", key: "prayer-song", en: "PRAYER WORSHIP", ko: "기도회 찬양" },
+  { no: "11", key: "community", en: "COMMUNITY", ko: "사랑방 소개" },
+  { no: "12", key: "ending", en: "ENDING", ko: "마무리 & 사진" },
 ];
 
 const cardClass = "rounded-3xl border-3 border-black bg-white p-4 shadow-pop-sm";
@@ -130,6 +132,33 @@ export default function AdminPage() {
 
   const current = SLIDES[currentIndex] ?? SLIDES[0];
 
+  // 찬양 / 기도회 찬양 슬라이드일 때: 휴대폰에서 가사를 넘긴다 (프로젝터와 위치 공유)
+  const lyricKey = current.key === "worship" || current.key === "prayer-song" ? current.key : null;
+  const lyricList = lyricKey === "worship" ? worshipPlaylist : prayerPlaylist;
+  const lyricPos = (lyricKey && eventState.lyricPos?.[lyricKey]) || { song: 0, page: 0 };
+  const lyricSong = lyricList[lyricPos.song] ?? lyricList[0];
+  const lyricPage = lyricSong.slides[lyricPos.page] ?? lyricSong.slides[0];
+
+  const goLyric = (song: number, page: number) => {
+    if (!lyricKey) return;
+    const cur = realtimeHub.getEventState();
+    realtimeHub.updateEventState({ lyricPos: { ...(cur.lyricPos ?? {}), [lyricKey]: { song, page } } });
+  };
+  const lyricIsFirst = lyricPos.song === 0 && lyricPos.page === 0;
+  const lyricIsLast = lyricPos.song === lyricList.length - 1 && lyricPos.page === lyricSong.slides.length - 1;
+  const nextLyric = () => {
+    if (lyricPos.page < lyricSong.slides.length - 1) goLyric(lyricPos.song, lyricPos.page + 1);
+    else if (lyricPos.song < lyricList.length - 1) goLyric(lyricPos.song + 1, 0);
+  };
+  const prevLyric = () => {
+    if (lyricPos.page > 0) goLyric(lyricPos.song, lyricPos.page - 1);
+    else if (lyricPos.song > 0) goLyric(lyricPos.song - 1, lyricList[lyricPos.song - 1].slides.length - 1);
+  };
+
+  // 합심 기도 슬라이드일 때: 기도 제목 선택
+  const prayerIndex = eventState.prayerTopicIndex ?? 0;
+  const selectPrayer = (idx: number) => realtimeHub.updateEventState({ prayerTopicIndex: idx });
+
   return (
     <div className="min-h-screen select-none bg-neutral-100 pb-32">
       {/* 상단 바 */}
@@ -203,6 +232,93 @@ export default function AdminPage() {
             </div>
           )}
         </section>
+
+        {/* 가사 조작 (찬양 / 기도회 찬양 슬라이드에서만) */}
+        {lyricKey && (
+          <section className="rounded-3xl border-3 border-black bg-shin-yellow/60 p-4 shadow-pop-sm">
+            <h3 className="mb-1 text-lg">가사 넘기기</h3>
+            <p className="mb-3 text-sm text-neutral-700">
+              {lyricSong.title} · 가사 {lyricPos.page + 1} / {lyricSong.slides.length}
+            </p>
+
+            <div className="rounded-2xl border-2 border-black bg-white p-3 text-center text-base leading-snug">
+              {lyricPage.lines.map((line) => (
+                <p key={line}>{line}</p>
+              ))}
+            </div>
+
+            <div className="mt-3 grid grid-cols-2 gap-3">
+              <button
+                onClick={prevLyric}
+                disabled={lyricIsFirst}
+                className="pop-btn h-16 bg-white text-lg disabled:opacity-30"
+              >
+                <ChevronLeft className="h-6 w-6" /> 이전 가사
+              </button>
+              <button
+                onClick={nextLyric}
+                disabled={lyricIsLast}
+                className="pop-btn h-16 bg-crayon-pink text-lg text-white disabled:opacity-30"
+              >
+                다음 가사 <ChevronRight className="h-6 w-6" />
+              </button>
+            </div>
+
+            <p className="mt-4 mb-2 text-sm text-neutral-700">곡 선택</p>
+            <div className="grid grid-cols-2 gap-2">
+              {lyricList.map((song, idx) => (
+                <button
+                  key={song.id}
+                  onClick={() => goLyric(idx, 0)}
+                  className={`min-h-12 rounded-xl border-2 border-black px-3 py-2 text-left text-sm leading-tight ${
+                    lyricPos.song === idx ? "bg-white ring-2 ring-inset ring-black" : "bg-white/60"
+                  }`}
+                >
+                  <span className="block text-xs text-neutral-500">{idx + 1}번</span>
+                  <span className="block truncate">{song.title}</span>
+                </button>
+              ))}
+            </div>
+
+            <p className="mt-4 mb-2 text-sm text-neutral-700">이 곡의 가사 바로가기</p>
+            <div className="grid grid-cols-1 gap-2">
+              {lyricSong.slides.map((slide, idx) => (
+                <button
+                  key={slide.slideIndex}
+                  onClick={() => goLyric(lyricPos.song, idx)}
+                  className={`min-h-11 truncate rounded-xl border-2 border-black px-3 py-2 text-left text-sm ${
+                    lyricPos.page === idx ? "bg-white ring-2 ring-inset ring-black" : "bg-white/60"
+                  }`}
+                >
+                  {idx + 1}. {slide.lines[0]}
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* 기도 제목 선택 (합심 기도 슬라이드에서만) */}
+        {current.key === "prayer" && (
+          <section className="rounded-3xl border-3 border-black bg-shin-yellow/60 p-4 shadow-pop-sm">
+            <h3 className="mb-3 text-lg">기도 제목 선택</h3>
+            <div className="space-y-2">
+              {defaultPrayerTopics.map((topic, idx) => (
+                <button
+                  key={topic.id}
+                  onClick={() => selectPrayer(idx)}
+                  className={`min-h-14 w-full rounded-xl border-2 border-black px-3 py-2 text-left text-base leading-tight ${
+                    prayerIndex === idx ? "bg-white ring-2 ring-inset ring-black" : "bg-white/60"
+                  }`}
+                >
+                  <span className="block text-xs text-neutral-500">
+                    기도 {idx + 1} · {topic.category}
+                  </span>
+                  <span className="block">{topic.title}</span>
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* 슬라이드 바로가기 */}
         <section className={cardClass}>
