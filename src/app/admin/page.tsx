@@ -27,14 +27,15 @@ const SLIDES = [
   { no: "02", key: "schedule", en: "SCHEDULE", ko: "시간표" },
   { no: "03", key: "transition", en: "TRANSITION", ko: "프로그램 전환" },
   { no: "04", key: "icebreak", en: "ICEBREAKING", ko: "조원 인사" },
-  { no: "05", key: "lunch", en: "LUNCH", ko: "점심 시간" },
-  { no: "06", key: "recreation", en: "RECREATION", ko: "게임 배틀" },
-  { no: "07", key: "worship", en: "WORSHIP", ko: "찬양 가사" },
-  { no: "08", key: "message", en: "MESSAGE", ko: "말씀 - 세상의 빛" },
-  { no: "09", key: "prayer", en: "PRAYER", ko: "합심 기도" },
-  { no: "10", key: "prayer-song", en: "PRAYER WORSHIP", ko: "기도회 찬양" },
-  { no: "11", key: "community", en: "COMMUNITY", ko: "사랑방 소개" },
-  { no: "12", key: "ending", en: "ENDING", ko: "마무리 & 사진" },
+  { no: "05", key: "jump-game", en: "JUMP GAME", ko: "짱구 점프 게임" },
+  { no: "06", key: "lunch", en: "LUNCH", ko: "점심 시간" },
+  { no: "07", key: "recreation", en: "RECREATION", ko: "게임 배틀" },
+  { no: "08", key: "worship", en: "WORSHIP", ko: "찬양 가사" },
+  { no: "09", key: "message", en: "MESSAGE", ko: "말씀 - 세상의 빛" },
+  { no: "10", key: "prayer", en: "PRAYER", ko: "합심 기도" },
+  { no: "11", key: "prayer-song", en: "PRAYER WORSHIP", ko: "기도회 찬양" },
+  { no: "12", key: "community", en: "COMMUNITY", ko: "사랑방 소개" },
+  { no: "13", key: "ending", en: "ENDING", ko: "마무리 & 사진" },
 ];
 
 const cardClass = "rounded-3xl border-3 border-black bg-white p-4 shadow-pop-sm";

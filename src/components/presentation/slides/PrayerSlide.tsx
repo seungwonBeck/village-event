@@ -72,14 +72,14 @@ export default function PrayerSlide() {
     <div className="relative isolate flex h-full w-full select-none flex-col justify-between gap-6 bg-[#000000]/60 px-6 pt-6 pb-28 text-white [container-type:inline-size] sm:px-12 sm:pt-8 sm:pb-28 md:px-[80px] xl:pb-8">
       {/* 상단: 행사 라벨 + 기도 제목 선택 */}
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-        <span className="text-sm text-white/70 sm:text-base">{event.eventLabel}</span>
+        <span className="text-base text-white/80 sm:text-xl">{event.eventLabel}</span>
 
         <div className="flex flex-wrap items-center gap-2">
           {topics.map((topic, idx) => (
             <button
               key={topic.id}
               onClick={() => selectTopic(idx)}
-              className={`rounded-full border px-4 py-1.5 text-sm transition-colors sm:text-base ${
+              className={`rounded-full border px-4 py-1.5 text-base transition-colors sm:px-5 sm:py-2 sm:text-xl ${
                 selectedIdx === idx
                   ? "border-white bg-white text-neutral-900"
                   : "border-white/30 bg-white/5 text-white/70 hover:bg-white/15"
@@ -93,14 +93,14 @@ export default function PrayerSlide() {
 
       {/* 중앙: 선택한 기도 제목을 크게 */}
       <div className="my-auto flex flex-col items-center px-2 text-center">
-        <p className="text-[max(1rem,1.6cqw)] text-white/70">
+        <p className="text-[max(1.2rem,2.4cqw)] text-white/80">
           기도 {selectedIdx + 1} · {current.category}
           {current.bibleRef && <span className="ml-3 text-white/50">{current.bibleRef}</span>}
         </p>
-        <h2 className="mt-[2cqw] max-w-[90%] text-[max(2rem,4.4cqw)] leading-[1.3] text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.7)]">
+        <h2 className="mt-[2cqw] max-w-[90%] text-[max(2.4rem,6.4cqw)] leading-[1.25] text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.7)]">
           {current.title}
         </h2>
-        <p className="mt-[2.4cqw] max-w-[78%] text-[max(1.2rem,2.3cqw)] leading-[1.6] text-white/85">
+        <p className="mt-[2.4cqw] max-w-[84%] text-[max(1.4rem,3cqw)] leading-[1.55] text-white/90">
           {current.description}
         </p>
       </div>

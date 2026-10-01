@@ -1,14 +1,14 @@
 import type { ReactNode } from "react";
 import type { CharacterKey } from "@/data/groups";
 
-const characterPngs: Record<CharacterKey, string> = {
+export const characterPngs: Record<CharacterKey, string> = {
   shiro: "/characters/shiro.png?v=3",
   himawari: "/characters/himawari.png?v=3",
   nene: "/characters/yuri.png?v=3",
   bo: "/characters/maenggu.png?v=3",
   kazama: "/characters/cheolsu.png?v=3",
   hero: "/characters/hero.png?v=3",
-  masao: "/characters/hooni.png?v=3",
+  masao: "/characters/hooni.png?v=4",
   shinchan: "/characters/shinchan.png?v=3",
 };
 

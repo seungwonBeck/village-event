@@ -12,6 +12,8 @@ interface WorshipSlideProps {
   footerLabel?: string;
   // 휴대폰 콘솔과 가사 위치를 공유하는 이름 (찬양 / 기도회 찬양을 구분)
   slideKey?: string;
+  // 가사 화면 바로가기(하단 알약 버튼) 표시 여부
+  showLyricNav?: boolean;
 }
 
 /**
@@ -22,6 +24,7 @@ export default function WorshipSlide({
   playlist = worshipPlaylist,
   footerLabel = `${event.ministry} 찬양 콘티`,
   slideKey = "worship",
+  showLyricNav = true,
 }: WorshipSlideProps) {
   const [pos, setPos] = useState<{ song: number; page: number }>({ song: 0, page: 0 });
   const songIndex = pos.song;
@@ -106,10 +109,10 @@ export default function WorshipSlide({
       {/* 상단: 곡 정보 & 곡 선택 번호 */}
       <div className="z-10 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
         {/* 왼쪽 상단: 곡 정보를 한 줄로 (유일하게 또렷한 글자) */}
-        <h3 className="flex min-w-0 items-center gap-6 whitespace-nowrap text-[max(1rem,1.5cqw)] leading-tight text-white/90">
-          <Music className="h-5 w-5 shrink-0" />
+        <h3 className="flex min-w-0 items-center gap-6 whitespace-nowrap text-[max(1.5rem,2.8cqw)] leading-tight text-white">
+          <Music className="h-[1em] w-[1em] shrink-0" />
           <span className="truncate">{currentSong.title}</span>
-          <span className="shrink-0 text-[max(0.75rem,0.95cqw)] text-white/60">{currentSong.artist}</span>
+          <span className="shrink-0 text-[max(1rem,1.6cqw)] text-white/75">{currentSong.artist}</span>
         </h3>
 
         <div className="flex flex-wrap items-center gap-2">
@@ -145,23 +148,25 @@ export default function WorshipSlide({
         </div>
       </div>
 
-      {/* 가사 네비게이션(테스트): 지금 곡의 가사 화면으로 바로 이동 */}
-      <div className="z-10 flex flex-wrap items-center justify-center gap-2">
-        {currentSong.slides.map((slide, idx) => (
-          <button
-            key={slide.slideIndex}
-            onClick={() => goTo(songIndex, idx)}
-            title={slide.lines.join(" ")}
-            className={`max-w-[14rem] truncate rounded-full border px-3 py-1 text-[max(0.75rem,0.95cqw)] transition-colors ${
-              slideIndex === idx
-                ? "border-white/70 bg-white/25 text-white"
-                : "border-white/15 bg-white/5 text-white/40 hover:bg-white/15"
-            }`}
-          >
-            {idx + 1}. {slide.lines[0]}
-          </button>
-        ))}
-      </div>
+      {/* 가사 네비게이션: 지금 곡의 가사 화면으로 바로 이동 (찬양 슬라이드에서는 숨김) */}
+      {showLyricNav && (
+        <div className="z-10 flex flex-wrap items-center justify-center gap-2">
+          {currentSong.slides.map((slide, idx) => (
+            <button
+              key={slide.slideIndex}
+              onClick={() => goTo(songIndex, idx)}
+              title={slide.lines.join(" ")}
+              className={`max-w-[14rem] truncate rounded-full border px-3 py-1 text-[max(0.75rem,0.95cqw)] transition-colors ${
+                slideIndex === idx
+                  ? "border-white/70 bg-white/25 text-white"
+                  : "border-white/15 bg-white/5 text-white/40 hover:bg-white/15"
+              }`}
+            >
+              {idx + 1}. {slide.lines[0]}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* 하단: 진행도 & 넘김 버튼 (멀리서도 보이게 크게) */}
       <div className="z-10 flex items-center justify-between gap-3 border-t border-white/10 pt-4 text-[max(0.8rem,1.05cqw)] text-white/30 sm:flex-row">

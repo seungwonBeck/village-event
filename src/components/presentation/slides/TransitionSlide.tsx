@@ -15,6 +15,8 @@ interface TransitionSlideProps {
   characterAlt?: string;
   // 한글 프로그램 제목을 바꿔 보여주고 싶을 때
   titleOverride?: string;
+  // 제목 아래에 붙는 소제목 (예: 아이스브레이킹 활동 안내)
+  subtitle?: string;
 }
 
 /**
@@ -27,6 +29,7 @@ export default function TransitionSlide({
   characterSrc = "/characters/himawari.png",
   characterAlt = "짱아",
   titleOverride,
+  subtitle,
 }: TransitionSlideProps) {
   const program =
     scheduleList.find((p) => p.id === (programId ?? eventState.currentProgramId)) ||
@@ -51,6 +54,10 @@ export default function TransitionSlide({
         <h2 className="text-2xl sm:text-4xl md:text-6xl font-black text-crayon-pink tracking-tight mb-4 sm:mb-6 drop-shadow-[2px_2px_0px_#000]">
           {titleOverride ?? program.title}
         </h2>
+
+        {subtitle && (
+          <p className="mb-4 text-lg font-bold text-neutral-700 sm:mb-6 sm:text-3xl">{subtitle}</p>
+        )}
 
         {/* 시간대 표시 뱃지 */}
         <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-neutral-900 text-crayon-yellow px-4 sm:px-6 py-1.5 sm:py-2.5 rounded-xl sm:rounded-2xl border-2 sm:border-3 border-black text-base sm:text-xl md:text-3xl font-black font-mono tracking-tight shadow-pop-sm">

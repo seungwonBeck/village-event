@@ -12,6 +12,7 @@ import MessageSlide from "@/components/presentation/slides/MessageSlide";
 import PrayerSlide from "@/components/presentation/slides/PrayerSlide";
 import CommunitySlide from "@/components/presentation/slides/CommunitySlide";
 import { prayerPlaylist } from "@/data/worship";
+import JumpGameSlide from "@/components/presentation/slides/JumpGameSlide";
 import EndingSlide from "@/components/presentation/slides/EndingSlide";
 import ReactionOverlay from "@/components/presentation/ReactionOverlay";
 import LiveInteractionOverlay from "@/components/presentation/LiveInteractionOverlay";
@@ -26,15 +27,16 @@ export default function PresentationPage() {
   const [eventState, setEventState] = useState<EventState>(defaultEventState);
   const [currentSlide, setCurrentSlide] = useState<number>(0);
 
-  // 슬라이드 컴포넌트 목록 (총 12개 기본 슬라이드)
+  // 슬라이드 컴포넌트 목록 (총 13개 기본 슬라이드)
   const slides = [
     <IntroSlide key="intro" />,
     <ScheduleSlide key="schedule" eventState={eventState} />,
     <TransitionSlide key="transition" eventState={eventState} characterSrc="/characters/himawari.png" characterAlt="짱아" />,
-    <TransitionSlide key="transition-icebreak" eventState={eventState} programId="opening" titleOverride="조원 인사 & 아이스브레이킹" characterSrc="/characters/cheolsu.png" characterAlt="철수" />,
+    <TransitionSlide key="transition-icebreak" eventState={eventState} programId="opening" titleOverride="조원 인사 & 아이스브레이킹" characterSrc="/characters/cheolsu.png" characterAlt="철수" subtitle="서로 얼굴 그려주기 · MBTI" />,
+    <JumpGameSlide key="jump-game" />,
     <TransitionSlide key="transition-lunch" eventState={eventState} programId="lunch" characterSrc="/characters/maenggu.png" characterAlt="맹구" />,
     <RecreationSlide key="recreation" />,
-    <WorshipSlide key="worship" slideKey="worship" />,
+    <WorshipSlide key="worship" slideKey="worship" showLyricNav={false} />,
     <MessageSlide key="message" />,
     <PrayerSlide key="prayer" />,
     <WorshipSlide key="prayer-song" slideKey="prayer-song" playlist={prayerPlaylist} footerLabel="기도회 찬양" />,
