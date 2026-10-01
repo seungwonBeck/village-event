@@ -18,7 +18,6 @@ export interface EventInfo {
   endTime: string;
   location: string;
   targetCount?: string;
-  speaker: string; // TODO: 설교자 / 말씀 인도자 결정 후 입력
 }
 
 export const event: EventInfo = {
@@ -39,5 +38,4 @@ export const event: EventInfo = {
   targetCount: "약 20~30명",
 
   // TODO: 설교자 결정 후 입력 (예: "김동신 목사", "이아포슬 전도사")
-  speaker: "",
 };

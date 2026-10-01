@@ -142,13 +142,6 @@ export default function HomePage() {
         </div>
 
         <div className="mx-auto mt-4 flex max-w-6xl flex-wrap items-center justify-center gap-4 md:justify-start">
-          <Link
-            href="/join"
-            className="inline-flex items-center gap-2 rounded-full border-3 border-black bg-shin-red px-8 py-3.5 text-xl text-white shadow-pop transition-transform hover:-translate-y-1 hover:shadow-pop-lg active:translate-y-0 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-shin-sky"
-          >
-            입장하기
-            <ChevronRight className="h-5 w-5" />
-          </Link>
           <a
             href="#schedule"
             className="rounded-full border-3 border-black bg-white px-6 py-3 text-lg shadow-pop-sm transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-shin-sky"
@@ -212,12 +205,6 @@ export default function HomePage() {
                 혼자 와도 어색하지 않게 가장님들과 사랑방 식구들이 따뜻하게 맞이해 드릴게요.
               </p>
             </div>
-            <Link
-              href="/join"
-              className="shrink-0 rounded-full border-3 border-black bg-shin-yellow px-5 py-2.5 shadow-pop-sm transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-shin-sky"
-            >
-              참여 신청 확인
-            </Link>
           </div>
         </div>
       </section>
@@ -233,9 +220,6 @@ export default function HomePage() {
                 </h2>
                 <p className="mt-4 text-base leading-relaxed text-white/90 sm:text-lg">
                   설레는 첫 만남부터 기도와 마무리까지. 순서를 미리 보고 함께 준비해요.
-                </p>
-                <p className="mt-2 font-hand text-lg text-white/80">
-                  현장 진행 상황은 휴대폰 화면(/live)에서도 볼 수 있어요.
                 </p>
               </div>
 
@@ -368,12 +352,6 @@ export default function HomePage() {
                 </p>
               </div>
               <div className="mt-6 flex flex-wrap items-center gap-4">
-                <Link
-                  href="/join"
-                  className="rounded-full border-3 border-black bg-shin-red px-6 py-3 text-lg text-white shadow-pop transition-transform hover:-translate-y-1 active:translate-y-0 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-shin-sky"
-                >
-                  참가자 등록하기
-                </Link>
                 <a
                   href="#schedule"
                   className="rounded-full border-3 border-black bg-white px-5 py-3 shadow-pop-sm hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-shin-sky"
@@ -478,13 +456,6 @@ export default function HomePage() {
               <h2 className="letter-stroke mt-1 text-5xl text-white sm:text-6xl">우리, 곧 만나요!</h2>
               <p className="mt-3 text-base">{event.church} {event.ministry}</p>
             </div>
-            <Link
-              href="/join"
-              className="flex items-center gap-2 rounded-full border-3 border-black bg-shin-yellow px-7 py-4 text-xl shadow-pop transition-transform hover:-translate-y-1 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-white"
-            >
-              실시간 참여하기
-              <ChevronRight className="h-5 w-5" />
-            </Link>
           </div>
 
           <div className="mt-8 flex flex-wrap items-center justify-between gap-4 text-sm">
@@ -492,7 +463,6 @@ export default function HomePage() {
             <nav aria-label="바로가기" className="flex items-center gap-6">
               <Link href="/presentation" className="underline-offset-4 hover:underline">프레젠테이션 스크린</Link>
               <Link href="/admin" className="underline-offset-4 hover:underline">진행자 콘솔</Link>
-              <Link href="/live" className="underline-offset-4 hover:underline">참가자 라이브 화면</Link>
             </nav>
           </div>
         </div>

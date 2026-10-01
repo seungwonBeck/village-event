@@ -1,24 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { event } from "@/data/event";
-import QrCode from "@/components/common/QrCode";
-import { Sparkles, Calendar, MapPin, BookOpen, Smartphone } from "lucide-react";
+import { Sparkles, Calendar, MapPin, BookOpen } from "lucide-react";
 
 /**
  * 01 INTRO SLIDE
  * 참고 포스터(참고2.jpg) 및 장난감 프레임(참고1.jpg)의 무드를 극대화한 메인 인트로
  */
 export default function IntroSlide() {
-  const [joinUrl, setJoinUrl] = useState<string>("/join");
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setJoinUrl(`${window.location.origin}/join`);
-    }
-  }, []);
-
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-between py-3 px-3 sm:py-6 sm:px-8 md:px-10 z-10 select-none gap-4 md:gap-2">
       {/* 상단 교회 및 부서명 배너 */}
@@ -97,32 +88,10 @@ export default function IntroSlide() {
         </div>
       </div>
 
-      {/* 하단 QR 코드 및 실시간 접속 안내 */}
-      <div className="w-full max-w-2xl pop-card bg-crayon-yellow/95 p-3 sm:p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 border-3 border-black shadow-pop">
-        <div className="flex items-center gap-3 sm:gap-3.5">
-          <QrCode value={joinUrl} size={74} />
-          <div className="text-left">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-crayon-red text-white text-[11px] font-black shadow-pop-sm mb-1">
-              <Smartphone className="w-3 h-3" />
-              <span>스마트폰 카메라로 QR 스캔</span>
-            </div>
-            <h3 className="text-base sm:text-lg font-black text-black">
-              지금 실시간 참여하기
-            </h3>
-            <p className="text-[11px] text-neutral-700 font-bold">
-              별도 가입 없이 닉네임만 넣고 바로 참여!
-            </p>
-          </div>
-        </div>
-
-        <div className="flex flex-col sm:items-end text-center sm:text-right">
-          <span className="text-[11px] sm:text-xs font-black text-neutral-800">
-            우리들의 못말리는 하루가 시작됩니다! ♡
-          </span>
-          <span className="text-[11px] sm:text-xs font-black text-crayon-pink mt-0.5">
-            많은 기대와 많은 참여 부탁해요! ✨
-          </span>
-        </div>
+      {/* 하단 인사말 */}
+      <div className="plate flex flex-col items-center px-6 py-2 text-center">
+        <span className="text-sm font-black text-neutral-800 sm:text-base">우리들의 못말리는 하루가 시작됩니다! ♡</span>
+        <span className="mt-0.5 text-sm font-black text-crayon-pink sm:text-base">많은 기대와 많은 참여 부탁해요! ✨</span>
       </div>
 
       {/* 가장자리 캐릭터 포인트 (짱구 & 맹구 - 대형 화면에서만 표시하여 모바일 간섭 방지) */}

@@ -47,18 +47,10 @@ export default function MessageSlide() {
           </div>
         </div>
 
-        {/* 말씀 인도자 정보 */}
+        {/* 나눔시간 안내 */}
         <div className="mt-4 sm:mt-8 flex items-center gap-2 font-bold text-xs sm:text-base text-neutral-700 pop-card px-4 sm:px-6 py-2 sm:py-2.5 bg-white/80">
           <User className="w-4 h-4 sm:w-5 sm:h-5 text-crayon-blue" />
-          <span>
-            {event.speaker ? (
-              <>말씀: <strong className="text-black font-black">{event.speaker}</strong></>
-            ) : (
-              <span className="text-neutral-500 italic">
-                말씀 인도자 (추후 안내)
-              </span>
-            )}
-          </span>
+          <span className="font-black text-black">나눔시간</span>
         </div>
       </div>
 

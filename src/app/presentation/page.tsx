@@ -9,12 +9,10 @@ import TransitionSlide from "@/components/presentation/slides/TransitionSlide";
 import RecreationSlide from "@/components/presentation/slides/RecreationSlide";
 import WorshipSlide from "@/components/presentation/slides/WorshipSlide";
 import MessageSlide from "@/components/presentation/slides/MessageSlide";
-import PrayerSlide from "@/components/presentation/slides/PrayerSlide";
 import CommunitySlide from "@/components/presentation/slides/CommunitySlide";
 import { prayerPlaylist } from "@/data/worship";
 import JumpGameSlide from "@/components/presentation/slides/JumpGameSlide";
 import EndingSlide from "@/components/presentation/slides/EndingSlide";
-import ReactionOverlay from "@/components/presentation/ReactionOverlay";
 import { realtimeHub, defaultEventState } from "@/lib/realtime";
 import { EventState } from "@/types";
 
@@ -26,7 +24,7 @@ export default function PresentationPage() {
   const [eventState, setEventState] = useState<EventState>(defaultEventState);
   const [currentSlide, setCurrentSlide] = useState<number>(0);
 
-  // 슬라이드 컴포넌트 목록 (총 13개 기본 슬라이드)
+  // 슬라이드 컴포넌트 목록 (총 12개 기본 슬라이드)
   const slides = [
     <IntroSlide key="intro" />,
     <ScheduleSlide key="schedule" eventState={eventState} />,
@@ -37,14 +35,13 @@ export default function PresentationPage() {
     <RecreationSlide key="recreation" />,
     <WorshipSlide key="worship" slideKey="worship" showLyricNav={false} />,
     <MessageSlide key="message" />,
-    <PrayerSlide key="prayer" />,
-    <WorshipSlide key="prayer-song" slideKey="prayer-song" playlist={prayerPlaylist} footerLabel="기도회 찬양" />,
+    <WorshipSlide key="prayer-song" slideKey="prayer-song" playlist={prayerPlaylist} footerLabel="기도회 찬양" showLyricNav={false} />,
     <CommunitySlide key="community" />,
     <EndingSlide key="ending" />,
   ];
 
   // 찬양 시간에는 가사가 화면을 꽉 채우도록 전체화면 슬라이드로 표시
-  const fullBleedSlides = ["worship", "prayer", "prayer-song"];
+  const fullBleedSlides = ["worship", "prayer-song"];
   const totalSlides = slides.length;
 
   // 실시간 상태 동기화 구독
@@ -96,9 +93,6 @@ export default function PresentationPage() {
         {/* 현재 활성화된 슬라이드 렌더링 */}
         {slides[currentSlide] || slides[0]}
       </SlideContainer>
-
-      {/* 실시간 반응 이모지 플로팅 오버레이 */}
-      {eventState.isReactionEnabled && <ReactionOverlay />}
     </div>
   );
 }

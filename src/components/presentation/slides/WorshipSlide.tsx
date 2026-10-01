@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { worshipPlaylist, WorshipSong, SongSlide } from "@/data/worship";
 import { event } from "@/data/event";
+import { defaultPrayerTopics, PrayerTopic } from "@/data/prayer";
 import { realtimeHub } from "@/lib/realtime";
 import { EventState } from "@/types";
 import { Music, ChevronLeft, ChevronRight, Disc } from "lucide-react";
@@ -26,6 +27,17 @@ export default function WorshipSlide({
   slideKey = "worship",
   showLyricNav = true,
 }: WorshipSlideProps) {
+  // 곡 중간에 끼는 기도 제목 화면용 (관리자 콘솔에서 고친 기도 제목이 있으면 그걸 사용)
+  const [topics, setTopics] = useState<PrayerTopic[]>(defaultPrayerTopics);
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("ryeong_prayer_topics");
+      if (saved) setTopics(JSON.parse(saved));
+    } catch {
+      // 저장값이 깨졌으면 기본 기도 제목 사용
+    }
+  }, []);
+
   const [pos, setPos] = useState<{ song: number; page: number }>({ song: 0, page: 0 });
   const songIndex = pos.song;
   const slideIndex = pos.page;
@@ -134,19 +146,38 @@ export default function WorshipSlide({
         </div>
       </div>
 
-      {/* 중앙: 가사 (화면 폭에 비례해 크게) */}
-      <div className="z-10 my-auto flex flex-col items-center justify-center px-2 text-center">
-        <div className="max-w-[92%] space-y-[1.6cqw]">
-          {currentSlide.lines.map((line, lIdx) => (
-            <p
-              key={lIdx}
-              className="!font-extrabold text-[max(2.2rem,6.2cqw)] leading-[1.25] tracking-tight text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.6)]"
-            >
-              {line}
-            </p>
-          ))}
-        </div>
-      </div>
+      {/* 중앙: 가사 (화면 폭에 비례해 크게). 기도 제목 화면이면 기도 제목을 크게 */}
+      {(() => {
+        const topic = currentSlide.prayerTopic !== undefined ? topics[currentSlide.prayerTopic] : undefined;
+        if (topic) {
+          return (
+            <div className="z-10 my-auto flex flex-col items-center justify-center px-2 text-center">
+              <p className="text-[max(1.2rem,2.4cqw)] text-white/80">
+                기도 제목 {(currentSlide.prayerTopic ?? 0) + 1} · {topic.category}
+                {topic.bibleRef && <span className="ml-3 text-white/60">{topic.bibleRef}</span>}
+              </p>
+              <h2 className="mt-[2cqw] max-w-[90%] !font-extrabold text-[max(2.2rem,6cqw)] leading-[1.25] text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.6)]">
+                {topic.title}
+              </h2>
+              <p className="mt-[2.4cqw] max-w-[84%] text-[max(1.3rem,2.8cqw)] leading-[1.55] text-white/90">{topic.description}</p>
+            </div>
+          );
+        }
+        return (
+          <div className="z-10 my-auto flex flex-col items-center justify-center px-2 text-center">
+            <div className="max-w-[92%] space-y-[1.6cqw]">
+              {currentSlide.lines.map((line, lIdx) => (
+                <p
+                  key={lIdx}
+                  className="!font-extrabold text-[max(2.2rem,6.2cqw)] leading-[1.25] tracking-tight text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.6)]"
+                >
+                  {line}
+                </p>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
 
       {/* 가사 네비게이션: 지금 곡의 가사 화면으로 바로 이동 (찬양 슬라이드에서는 숨김) */}
       {showLyricNav && (

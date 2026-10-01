@@ -100,26 +100,6 @@ export default function AdminContentPage() {
               </div>
             </div>
 
-            {/* 설교자 / 말씀 인도자 입력 (TODO 해결!) */}
-            <div className="bg-amber-50 p-4 rounded-2xl border-2 border-dashed border-amber-300">
-              <label className="block text-xs font-black text-amber-900 mb-1 flex items-center gap-1">
-                <User className="w-4 h-4 text-crayon-red" />
-                <span>말씀 인도자 / 설교자 (확정 후 입력)</span>
-              </label>
-              <input
-                type="text"
-                value={eventData.speaker}
-                onChange={(e) =>
-                  setEventData({ ...eventData, speaker: e.target.value })
-                }
-                placeholder="예: 김동신 목사, 이아포슬 전도사"
-                className="w-full p-2.5 rounded-xl border-2 border-black font-extrabold text-sm bg-white"
-              />
-              <span className="text-[11px] font-bold text-amber-700 mt-1 block">
-                * 입력 시 말씀 슬라이드(06 MESSAGE)에 자동으로 이름이 반영됩니다.
-              </span>
-            </div>
-
             {/* 일시 및 장소 */}
             <div className="grid grid-cols-2 gap-4">
               <div>

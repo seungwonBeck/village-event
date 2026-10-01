@@ -3,27 +3,22 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { realtimeHub, defaultEventState } from "@/lib/realtime";
-import { EventState, Participant, AnonymousQuestion, TeamScore } from "@/types";
-import { defaultQuizzes } from "@/data/quiz";
+import { EventState, TeamScore } from "@/types";
 import { scheduleList } from "@/data/schedule";
 import { worshipPlaylist, prayerPlaylist } from "@/data/worship";
-import { defaultPrayerTopics } from "@/data/prayer";
 import {
-  Users,
-  MessageSquare,
   Trophy,
   ExternalLink,
   ChevronLeft,
   ChevronRight,
   Settings,
-  HelpCircle,
   Plus,
   Minus,
 } from "lucide-react";
 
 // 슬라이드 바로가기 목록 (번호, 영문 이름, 한글 이름)
 const SLIDES = [
-  { no: "01", key: "intro", en: "INTRO", ko: "행사 안내 & QR" },
+  { no: "01", key: "intro", en: "INTRO", ko: "오프닝" },
   { no: "02", key: "schedule", en: "SCHEDULE", ko: "시간표" },
   { no: "03", key: "transition", en: "TRANSITION", ko: "프로그램 전환" },
   { no: "04", key: "icebreak", en: "ICEBREAKING", ko: "조원 인사" },
@@ -32,42 +27,29 @@ const SLIDES = [
   { no: "07", key: "recreation", en: "RECREATION", ko: "게임 배틀" },
   { no: "08", key: "worship", en: "WORSHIP", ko: "찬양 가사" },
   { no: "09", key: "message", en: "MESSAGE", ko: "말씀 - 세상의 빛" },
-  { no: "10", key: "prayer", en: "PRAYER", ko: "합심 기도" },
-  { no: "11", key: "prayer-song", en: "PRAYER WORSHIP", ko: "기도회 찬양" },
-  { no: "12", key: "community", en: "COMMUNITY", ko: "사랑방 소개" },
-  { no: "13", key: "ending", en: "ENDING", ko: "마무리 & 사진" },
+  { no: "10", key: "prayer-song", en: "PRAYER WORSHIP", ko: "기도회 찬양" },
+  { no: "11", key: "community", en: "COMMUNITY", ko: "사랑방 소개" },
+  { no: "12", key: "ending", en: "ENDING", ko: "마무리 & 사진" },
 ];
 
 const cardClass = "rounded-3xl border-3 border-black bg-white p-4 shadow-pop-sm";
 
 /**
  * 진행자 콘솔 (/admin) - 휴대폰 전용 세로 화면
- * 위에서부터: 지금 슬라이드 → 슬라이드 바로가기 → 진행 설정 → 퀴즈 → 점수 → 질문, 아래 고정 리모컨
+ * 위에서부터: 지금 슬라이드 → 가사 → 슬라이드 바로가기 → 진행 설정 → 점수, 아래 고정 리모컨
  */
 export default function AdminPage() {
   const [eventState, setEventState] = useState<EventState>(defaultEventState);
-  const [participants, setParticipants] = useState<Participant[]>([]);
-  const [questions, setQuestions] = useState<AnonymousQuestion[]>([]);
   const [scores, setScores] = useState<TeamScore[]>([]);
   // 프로젝터 미리보기는 눌렀을 때만 불러와 휴대폰 데이터를 아낀다
   const [showPreview, setShowPreview] = useState<boolean>(false);
 
   useEffect(() => {
     setEventState(realtimeHub.getEventState());
-    setParticipants(realtimeHub.getParticipants());
-    setQuestions(realtimeHub.getQuestions());
     setScores(realtimeHub.getScores());
 
     const unsubState = realtimeHub.subscribe("state_changed", (st: EventState) => {
       setEventState(st);
-    });
-
-    const unsubPart = realtimeHub.subscribe("participant_joined", (p: Participant) => {
-      setParticipants((prev) => [...prev.filter((item) => item.id !== p.id), p]);
-    });
-
-    const unsubQ = realtimeHub.subscribe("question_submitted", (q: AnonymousQuestion) => {
-      setQuestions((prev) => [...prev, q]);
     });
 
     const unsubScore = realtimeHub.subscribe("scores_updated", (sc: TeamScore[]) => {
@@ -76,8 +58,6 @@ export default function AdminPage() {
 
     return () => {
       unsubState();
-      unsubPart();
-      unsubQ();
       unsubScore();
     };
   }, []);
@@ -94,35 +74,6 @@ export default function AdminPage() {
   };
   const handlePrevSlide = () => {
     if (currentIndex > 0) handleJumpSlide(currentIndex - 1);
-  };
-
-  // 반응(Reaction) 토글
-  const toggleReaction = () => {
-    realtimeHub.updateEventState({ isReactionEnabled: !eventState.isReactionEnabled });
-  };
-
-  // 투표/퀴즈 오픈 토글
-  const toggleVote = () => {
-    realtimeHub.updateEventState({ isVoteOpen: !eventState.isVoteOpen });
-  };
-
-  // 퀴즈 정답 공개 토글
-  const toggleQuizReveal = () => {
-    realtimeHub.updateEventState({ isQuizRevealed: !eventState.isQuizRevealed });
-  };
-
-  // 활성 퀴즈 변경
-  const handleChangeQuiz = (quizId: string) => {
-    realtimeHub.updateEventState({
-      activeQuizId: quizId,
-      isQuizRevealed: false,
-    });
-  };
-
-  // 질문 승인/미승인 토글
-  const handleApproveQuestion = (qId: string, approved: boolean) => {
-    realtimeHub.approveQuestion(qId, approved);
-    setQuestions([...realtimeHub.getQuestions()]);
   };
 
   // 점수 증감
@@ -156,10 +107,6 @@ export default function AdminPage() {
     else if (lyricPos.song > 0) goLyric(lyricPos.song - 1, lyricList[lyricPos.song - 1].slides.length - 1);
   };
 
-  // 합심 기도 슬라이드일 때: 기도 제목 선택
-  const prayerIndex = eventState.prayerTopicIndex ?? 0;
-  const selectPrayer = (idx: number) => realtimeHub.updateEventState({ prayerTopicIndex: idx });
-
   return (
     <div className="min-h-screen select-none bg-neutral-100 pb-32">
       {/* 상단 바 */}
@@ -168,10 +115,6 @@ export default function AdminPage() {
           <h1 className="text-lg">
             령고을 <span className="text-crayon-pink">진행 콘솔</span>
           </h1>
-          <span className="flex items-center gap-1.5 rounded-full border-2 border-black bg-crayon-blue px-3 py-1 text-sm">
-            <Users className="h-4 w-4" />
-            {participants.length}명
-          </span>
         </div>
         <div className="mx-auto mt-2 flex max-w-md items-center gap-2 text-sm">
           <Link
@@ -298,29 +241,6 @@ export default function AdminPage() {
           </section>
         )}
 
-        {/* 기도 제목 선택 (합심 기도 슬라이드에서만) */}
-        {current.key === "prayer" && (
-          <section className="rounded-3xl border-3 border-black bg-shin-yellow/60 p-4 shadow-pop-sm">
-            <h3 className="mb-3 text-lg">기도 제목 선택</h3>
-            <div className="space-y-2">
-              {defaultPrayerTopics.map((topic, idx) => (
-                <button
-                  key={topic.id}
-                  onClick={() => selectPrayer(idx)}
-                  className={`min-h-14 w-full rounded-xl border-2 border-black px-3 py-2 text-left text-base leading-tight ${
-                    prayerIndex === idx ? "bg-white ring-2 ring-inset ring-black" : "bg-white/60"
-                  }`}
-                >
-                  <span className="block text-xs text-neutral-500">
-                    기도 {idx + 1} · {topic.category}
-                  </span>
-                  <span className="block">{topic.title}</span>
-                </button>
-              ))}
-            </div>
-          </section>
-        )}
-
         {/* 슬라이드 바로가기 */}
         <section className={cardClass}>
           <h3 className="mb-3 text-lg">슬라이드 바로가기</h3>
@@ -361,57 +281,6 @@ export default function AdminPage() {
             ))}
           </select>
 
-          <div className="mt-4 grid grid-cols-2 gap-2">
-            <button
-              onClick={toggleReaction}
-              className={`min-h-14 rounded-xl border-2 border-black px-2 text-sm ${
-                eventState.isReactionEnabled ? "bg-crayon-yellow" : "bg-neutral-100 text-neutral-400"
-              }`}
-            >
-              반응 효과
-              <span className="block text-base">{eventState.isReactionEnabled ? "켜짐" : "꺼짐"}</span>
-            </button>
-            <button
-              onClick={toggleVote}
-              className={`min-h-14 rounded-xl border-2 border-black px-2 text-sm ${
-                eventState.isVoteOpen ? "bg-crayon-pink text-white" : "bg-neutral-100 text-neutral-400"
-              }`}
-            >
-              투표/퀴즈
-              <span className="block text-base">{eventState.isVoteOpen ? "공개" : "닫힘"}</span>
-            </button>
-          </div>
-        </section>
-
-        {/* 퀴즈 */}
-        <section className={cardClass}>
-          <h3 className="mb-3 flex items-center gap-1.5 text-lg">
-            <HelpCircle className="h-5 w-5 text-crayon-red" />
-            퀴즈 / 투표
-          </h3>
-          <label htmlFor="active-quiz" className="sr-only">
-            진행할 퀴즈 선택
-          </label>
-          <select
-            id="active-quiz"
-            value={eventState.activeQuizId || ""}
-            onChange={(e) => handleChangeQuiz(e.target.value)}
-            className="min-h-12 w-full rounded-xl border-2 border-black bg-white px-3 text-base"
-          >
-            {defaultQuizzes.map((q) => (
-              <option key={q.id} value={q.id}>
-                [{q.type.toUpperCase()}] {q.question.substring(0, 22)}...
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={toggleQuizReveal}
-            className={`mt-3 min-h-12 w-full rounded-xl border-2 border-black text-base ${
-              eventState.isQuizRevealed ? "bg-emerald-400" : "bg-neutral-100"
-            }`}
-          >
-            {eventState.isQuizRevealed ? "정답 공개 중 (누르면 숨김)" : "정답 공개하기"}
-          </button>
         </section>
 
         {/* 팀 점수 */}
@@ -449,34 +318,6 @@ export default function AdminPage() {
           </div>
         </section>
 
-        {/* 참가자 질문 */}
-        <section className={cardClass}>
-          <h3 className="mb-1 flex items-center gap-1.5 text-lg">
-            <MessageSquare className="h-5 w-5 text-crayon-blue" />
-            참가자 질문 ({questions.length})
-          </h3>
-          <p className="mb-3 text-sm text-neutral-500">승인하면 프로젝터에 나와요.</p>
-          {questions.length === 0 ? (
-            <p className="py-3 text-center text-sm text-neutral-400">아직 등록된 질문이 없어요.</p>
-          ) : (
-            <div className="space-y-2">
-              {questions.map((q) => (
-                <div key={q.id} className="rounded-2xl border border-neutral-300 bg-neutral-50 p-3">
-                  <span className="block text-xs text-neutral-500">{q.senderName}</span>
-                  <p className="mt-0.5 text-base">{q.content}</p>
-                  <button
-                    onClick={() => handleApproveQuestion(q.id, !q.approved)}
-                    className={`mt-2 min-h-11 w-full rounded-xl border-2 border-black text-sm ${
-                      q.approved ? "bg-neutral-200" : "bg-crayon-pink text-white"
-                    }`}
-                  >
-                    {q.approved ? "숨기기" : "승인 (화면에 표시)"}
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
       </main>
 
       {/* 아래 고정 리모컨: 엄지로 누르기 쉬운 큰 버튼 */}

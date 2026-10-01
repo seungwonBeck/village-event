@@ -34,8 +34,6 @@ const files = [
   'src/data/prayer.ts',
   'src/data/quiz.ts',
   'src/app/presentation/page.tsx',
-  'src/app/join/page.tsx',
-  'src/app/live/page.tsx',
   'src/app/admin/page.tsx',
   'src/app/admin/content/page.tsx',
   'src/app/page.tsx'

@@ -39,25 +39,10 @@ export function SiteHeader() {
             <Presentation className="w-3.5 h-3.5" />
             <span>프레젠테이션</span>
           </Link>
-          <Link
-            href="/join"
-            className="inline-flex items-center gap-2 rounded-full border-2 border-black bg-shin-yellow px-5 py-2 transition-colors hover:bg-shin-red hover:text-white shadow-pop-sm active:translate-y-0.5"
-          >
-            <span>함께하기</span>
-            <span aria-hidden="true">↗</span>
-          </Link>
         </nav>
 
         {/* 모바일 햄버거 토글 버튼 & 함께하기 버튼 */}
         <div className="flex md:hidden items-center gap-2">
-          <Link
-            href="/join"
-            className="inline-flex items-center gap-1 rounded-full border-2 border-black bg-shin-yellow px-3.5 py-1.5 text-xs font-black text-ink shadow-pop-sm active:translate-y-0.5"
-          >
-            <span>함께하기</span>
-            <span aria-hidden="true">↗</span>
-          </Link>
-
           <button
             type="button"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

@@ -46,10 +46,9 @@ export const presentationSlidesInfo = [
   { id: "recreation", title: "레크 배틀 & 점수", badge: "07", icon: "🎮", defaultBg: "/images/presentation/frame-toys.jpg" },
   { id: "worship", title: "찬양 & 가사", badge: "08", icon: "🎵", defaultBg: "/images/presentation/bg-kindergarten.jpg" },
   { id: "message", title: "말씀 & 본문", badge: "09", icon: "📖", defaultBg: "/images/presentation/frame-toys.jpg" },
-  { id: "prayer", title: "공동체 합심기도", badge: "10", icon: "🙏", defaultBg: "/images/presentation/bg-kindergarten.jpg" },
-  { id: "prayer-song", title: "기도회 찬양", badge: "11", icon: "🕊️", defaultBg: "/images/presentation/bg-kindergarten.jpg" },
-  { id: "community", title: "사랑방 가장 소개", badge: "12", icon: "💛", defaultBg: "/images/presentation/frame-toys.jpg" },
-  { id: "ending", title: "엔딩 & 단체사진", badge: "13", icon: "🎉", defaultBg: "/images/presentation/bg-kindergarten.jpg" },
+  { id: "prayer-song", title: "기도회 찬양", badge: "10", icon: "🕊️", defaultBg: "/images/presentation/bg-kindergarten.jpg" },
+  { id: "community", title: "사랑방 가장 소개", badge: "11", icon: "💛", defaultBg: "/images/presentation/frame-toys.jpg" },
+  { id: "ending", title: "엔딩 & 단체사진", badge: "12", icon: "🎉", defaultBg: "/images/presentation/bg-kindergarten.jpg" },
 ];
 
 /**

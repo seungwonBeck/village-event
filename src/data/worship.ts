@@ -6,6 +6,8 @@
 export interface SongSlide {
   slideIndex: number;
   lines: string[];
+  // 지정하면 가사 대신 해당 번호(0부터)의 기도 제목을 크게 보여준다 (기도회 찬양 중간에 기도 제목이 끼는 곡용)
+  prayerTopic?: number;
 }
 
 export interface WorshipSong {
@@ -510,8 +512,37 @@ const rawWorshipPlaylist: WorshipSong[] = [
 ];
 
 // 가사 페이지 배열(한 페이지 = 화면 한 장)을 SongSlide로 변환
+// 기도 제목 화면 (lines는 관리자 콘솔 목록 표시용)
+const topicSlide = (topicIndex: number): SongSlide => ({
+  slideIndex: 0,
+  lines: [`기도 제목 ${topicIndex + 1}`],
+  prayerTopic: topicIndex,
+});
+
 const toSlides = (pages: string[][]): SongSlide[] =>
   pages.map((lines, i) => ({ slideIndex: i + 1, lines }));
+
+// ---- 기도회 찬양 섹션: 악보의 V / P.C / C 단위로 만들어 두고 곡마다 순서대로 이어 붙인다 ----
+// 주의 성소로
+const verse1 = toSlides([["주의 성소로 들어가네", "주의 말씀 있는 곳"], ["죄 씻음과 참 안식을", "누리겠네"]]);
+const verse2 = toSlides([["주의 성소로 들어가서", "참 평안 얻겠네"], ["큰 기쁨과 참 자유로", "찬양드리리"]]);
+const preChorusA = toSlides([["주님 앞에 나오라", "감사함으로 나오라"], ["신실하시며 자비로우신", "주님 앞에 나오라"]]);
+const chorusA = toSlides([["주님 앞에 나아갑니다", "주의 사랑의 품에"], ["크고 놀라운 사랑", "날 온전케 하시네"]]);
+// 무너짐 가운데서
+const verseB = toSlides([
+  ["나 다시 예수께 돌아가려 하네", "넋을 잃고 잃어버린 예배의 자리로"],
+  ["나 다시 예수께 돌아가려 하네", "주의 성실을 의지해 연약한 모습으로"],
+]);
+const preChorusB = toSlides([
+  ["아버지께서 일하고 계시네", "고요한 날들이 아득하여도"],
+  ["예수 그리스도 주의 이름이", "그 약속을 이루셨듯이 영원히 있겠네"],
+]);
+const chorusB = toSlides([
+  ["믿음과 소망 그리고 사랑", "아버지와 그의 아들"],
+  ["당신의 영이 우리와 함께", "영원히"],
+]);
+const forever = toSlides([["영원히"]]);
+const returnToJesus = toSlides([["나 다시 예수께", "돌아가려 하네"]]);
 
 /**
  * 기도회 찬양 (합심기도 시간에 부르는 곡) - 악보 기준
@@ -522,30 +553,29 @@ const rawPrayerPlaylist: WorshipSong[] = [
     title: "주의 성소로",
     artist: "아이자야씩스티원 (Isaiah 6tyOne)",
     key: "F Major",
-    slides: toSlides([
-      ["주의 성소로 들어가네", "주의 말씀 있는 곳"],
-      ["죄 씻음과 참 안식을", "누리겠네"],
-      ["주의 성소로 들어가서", "참 평안 얻겠네"],
-      ["큰 기쁨과 참 자유로", "찬양드리리"],
-      ["주님 앞에 나오라", "감사함으로 나오라"],
-      ["신실하시며 자비로우신", "주님 앞에 나오라"],
-      ["주님 앞에 나아갑니다", "주의 사랑의 품에"],
-      ["크고 놀라운 사랑", "날 온전케 하시네"],
-    ]),
+    // 악보 순서: V1-V2-P.C-C-V1-V2-P.C-P.C-C-C-V1(건반만) → 끝나면 기도 제목 1
+    slides: [
+      ...verse1, ...verse2, ...preChorusA, ...chorusA,
+      ...verse1, ...verse2, ...preChorusA, ...preChorusA, ...chorusA, ...chorusA,
+      ...verse1,
+      topicSlide(0),
+    ],
   },
   {
     id: "prayer-song-6",
     title: "무너짐 가운데서",
     artist: "WELOVE (위러브)",
     key: "C Major",
-    slides: toSlides([
-      ["나 다시 예수께 돌아가려 하네", "넋을 잃고 잃어버린 예배의 자리로"],
-      ["나 다시 예수께 돌아가려 하네", "주의 성실을 의지해 연약한 모습으로"],
-      ["아버지께서 일하고 계시네", "고요한 날들이 아득하여도"],
-      ["예수 그리스도 주의 이름이", "그 약속을 이루셨듯이 영원히 있겠네"],
-      ["믿음과 소망 그리고 사랑", "아버지와 그의 아들"],
-      ["당신의 영이 우리와 함께", "영원히"],
-    ]),
+    // 악보 순서: V-P.C-C-V-P.C-C-C-영원히-나 다시 예수께×3-C-영원히×3-V(건반만) → 끝나면 기도 제목 2, 3
+    slides: [
+      ...verseB, ...preChorusB, ...chorusB,
+      ...verseB, ...preChorusB, ...chorusB, ...chorusB, ...forever,
+      ...returnToJesus, ...returnToJesus, ...returnToJesus,
+      ...chorusB, ...forever, ...forever, ...forever,
+      ...verseB,
+      topicSlide(1),
+      topicSlide(2),
+    ],
   },
   {
     id: "prayer-song-1",
@@ -565,10 +595,8 @@ const rawPrayerPlaylist: WorshipSong[] = [
     artist: "미확인",
     key: "E Major",
     slides: toSlides([
-      ["완전하신 나의 주", "나의 길로 날 인도하소서"],
-      ["행하신 모든 일 주님의 영광", "다 경배합니다 예배합니다"],
-      ["찬양합니다 주님만 날 다스리소서", "예배합니다"],
-      ["찬양합니다", "주님 홀로 높임 받으소서"],
+      ["예배합니다 찬양합니다", "주님만 날 다스리소서"],
+      ["예배합니다 찬양합니다", "주님 홀로 높임 받으소서"],
     ]),
   },
   {
@@ -612,4 +640,8 @@ const dedupeSlides = (song: WorshipSong): WorshipSong => {
 };
 
 export const worshipPlaylist: WorshipSong[] = rawWorshipPlaylist.map(dedupeSlides);
-export const prayerPlaylist: WorshipSong[] = rawPrayerPlaylist.map(dedupeSlides);
+// 기도회 찬양은 악보 순서(반복 포함)를 그대로 쓰므로 중복을 지우지 않고 번호만 다시 매긴다
+export const prayerPlaylist: WorshipSong[] = rawPrayerPlaylist.map((song) => ({
+  ...song,
+  slides: song.slides.map((slide, i) => ({ ...slide, slideIndex: i + 1 })),
+}));
