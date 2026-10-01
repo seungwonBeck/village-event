@@ -15,7 +15,6 @@ import { prayerPlaylist } from "@/data/worship";
 import JumpGameSlide from "@/components/presentation/slides/JumpGameSlide";
 import EndingSlide from "@/components/presentation/slides/EndingSlide";
 import ReactionOverlay from "@/components/presentation/ReactionOverlay";
-import LiveInteractionOverlay from "@/components/presentation/LiveInteractionOverlay";
 import { realtimeHub, defaultEventState } from "@/lib/realtime";
 import { EventState } from "@/types";
 
@@ -100,9 +99,6 @@ export default function PresentationPage() {
 
       {/* 실시간 반응 이모지 플로팅 오버레이 */}
       {eventState.isReactionEnabled && <ReactionOverlay />}
-
-      {/* 실시간 투표 / 퀴즈 / 질문 팝업 오버레이 */}
-      <LiveInteractionOverlay eventState={eventState} />
     </div>
   );
 }
