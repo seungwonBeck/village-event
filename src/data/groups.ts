@@ -126,6 +126,8 @@ export const groups: LeaderGroupItem[] = [
       "우지훈 (97또래)",
       "권수진 (98또래)",
       "조기준 (97또래)",
+      "민지원 (98또래)",
+      "배대영 (98또래)",
     ],
     motto: "기쁨과 감사가 넘치는 못말리는 우리 방!",
     image: "/images/event/group-lee-sanghee.png",

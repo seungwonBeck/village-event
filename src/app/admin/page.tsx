@@ -24,12 +24,14 @@ const SLIDES = [
   { no: "04", key: "icebreak", en: "ICEBREAKING", ko: "조원 인사" },
   { no: "05", key: "jump-game", en: "JUMP GAME", ko: "짱구 점프 게임" },
   { no: "06", key: "lunch", en: "LUNCH", ko: "점심 시간" },
-  { no: "07", key: "recreation", en: "RECREATION", ko: "게임 배틀" },
-  { no: "08", key: "worship", en: "WORSHIP", ko: "찬양 가사" },
-  { no: "09", key: "message", en: "MESSAGE", ko: "말씀 - 세상의 빛" },
-  { no: "10", key: "prayer-song", en: "PRAYER WORSHIP", ko: "기도회 찬양" },
-  { no: "11", key: "community", en: "COMMUNITY", ko: "사랑방 소개" },
-  { no: "12", key: "ending", en: "ENDING", ko: "마무리 & 사진" },
+  { no: "07", key: "goeun-time", en: "GOEUN TIME", ko: "고은 가장님 Time" },
+  { no: "08", key: "sanghee-time", en: "SANGHEE TIME", ko: "상희 가장님 Time" },
+  { no: "09", key: "recreation", en: "RECREATION", ko: "게임 배틀" },
+  { no: "10", key: "worship", en: "WORSHIP", ko: "찬양 가사" },
+  { no: "11", key: "message", en: "MESSAGE", ko: "말씀 - 세상의 빛" },
+  { no: "12", key: "prayer-song", en: "PRAYER WORSHIP", ko: "기도회 찬양" },
+  { no: "13", key: "community", en: "COMMUNITY", ko: "사랑방 소개" },
+  { no: "14", key: "ending", en: "ENDING", ko: "마무리 & 사진" },
 ];
 
 const cardClass = "rounded-3xl border-3 border-black bg-white p-4 shadow-pop-sm";

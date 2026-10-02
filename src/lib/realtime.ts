@@ -36,6 +36,7 @@ export const defaultScores: TeamScore[] = [
   { id: "team-2", name: "2팀 맹구팀", score: 0, color: "bg-crayon-pink" },
   { id: "team-3", name: "3팀 유리팀", score: 0, color: "bg-crayon-blue" },
   { id: "team-4", name: "4팀 철수팀", score: 0, color: "bg-crayon-green" },
+  { id: "team-5", name: "5팀 훈이팀", score: 0, color: "bg-crayon-orange" },
 ];
 
 class RealtimeHub {
@@ -304,7 +305,10 @@ class RealtimeHub {
     const raw = localStorage.getItem(STORAGE_KEYS.SCORES);
     if (!raw) return defaultScores;
     try {
-      return JSON.parse(raw);
+      const saved: TeamScore[] = JSON.parse(raw);
+      // 예전에 저장된 점수판에 없는 팀(5팀 등)은 기본값으로 채워 넣는다
+      const missing = defaultScores.filter((d) => !saved.some((t) => t.id === d.id));
+      return missing.length > 0 ? [...saved, ...missing.map((t) => ({ ...t }))] : saved;
     } catch {
       return defaultScores;
     }
