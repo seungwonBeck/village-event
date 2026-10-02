@@ -1,7 +1,7 @@
 "use client";
 
 import { event } from "@/data/event";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { groups, LeaderGroupItem } from "@/data/groups";
 import { ChevronLeft, ChevronRight, Heart, Sparkles, Crown } from "lucide-react";
@@ -28,6 +28,28 @@ export default function CommunitySlide() {
       setSelectedIdx((prev) => prev - 1);
     }
   };
+
+  // 방향키/스페이스로 가장님을 한 명씩 넘긴다. 첫 번째의 ←, 마지막의 →는 슬라이드 이동에 양보한다
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const tag = document.activeElement?.tagName.toLowerCase();
+      if (tag === "input" || tag === "textarea") return;
+
+      const isNextKey = e.key === "ArrowRight" || e.key === " ";
+      if (isNextKey && selectedIdx < groups.length - 1) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        setSelectedIdx(selectedIdx + 1);
+      } else if (e.key === "ArrowLeft" && selectedIdx > 0) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        setSelectedIdx(selectedIdx - 1);
+      }
+    };
+    // 캡처 단계에서 먼저 받아야 슬라이드 컨테이너의 단축키보다 앞선다
+    window.addEventListener("keydown", handleKeyDown, true);
+    return () => window.removeEventListener("keydown", handleKeyDown, true);
+  }, [selectedIdx]);
 
   return (
     <div className="relative w-full h-full flex flex-col justify-between py-4 px-3 sm:py-6 sm:px-8 md:px-12 z-10 select-none gap-4 sm:gap-6">
@@ -113,13 +135,14 @@ export default function CommunitySlide() {
 
           {/* 우측 (모바일 1번째 순서, 데스크톱 5열): 대표 캐릭터 / 사진 */}
           <div className="col-span-1 lg:col-span-5 flex flex-col items-center justify-center p-2 sm:p-4 order-1 lg:order-2">
-            <div className="w-44 h-44 sm:w-56 sm:h-56 md:w-56 md:h-56 rounded-2xl sm:rounded-3xl border-3 sm:border-4 border-black bg-crayon-yellow/30 p-3 sm:p-4 flex items-center justify-center shadow-pop relative overflow-hidden">
+            {/* 사진 원본 비율(세로형)을 그대로 크게 보여준다 */}
+            <div className="w-56 sm:w-64 lg:w-72 rounded-2xl sm:rounded-3xl border-3 sm:border-4 border-black bg-crayon-yellow/30 p-2 sm:p-3 shadow-pop relative overflow-hidden">
               <Image
                 src={currentLeader.image || "/characters/shinchan.png"}
                 alt={currentLeader.displayName}
-                width={240}
-                height={240}
-                className="object-contain drop-shadow-md transform hover:scale-105 transition-transform"
+                width={348}
+                height={461}
+                className="h-auto w-full object-contain drop-shadow-md"
               />
             </div>
             <span className="mt-2 sm:mt-3 text-[11px] sm:text-xs font-black text-neutral-500 flex items-center gap-1">
