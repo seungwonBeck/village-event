@@ -12,6 +12,7 @@ import MessageSlide from "@/components/presentation/slides/MessageSlide";
 import CommunitySlide from "@/components/presentation/slides/CommunitySlide";
 import { prayerPlaylist } from "@/data/worship";
 import JumpGameSlide from "@/components/presentation/slides/JumpGameSlide";
+import LeaderTimeSlide from "@/components/presentation/slides/LeaderTimeSlide";
 import EndingSlide from "@/components/presentation/slides/EndingSlide";
 import { realtimeHub, defaultEventState } from "@/lib/realtime";
 import { EventState } from "@/types";
@@ -24,7 +25,7 @@ export default function PresentationPage() {
   const [eventState, setEventState] = useState<EventState>(defaultEventState);
   const [currentSlide, setCurrentSlide] = useState<number>(0);
 
-  // 슬라이드 컴포넌트 목록 (총 12개 기본 슬라이드)
+  // 슬라이드 컴포넌트 목록 (총 14개 기본 슬라이드)
   const slides = [
     <IntroSlide key="intro" />,
     <ScheduleSlide key="schedule" eventState={eventState} />,
@@ -32,6 +33,8 @@ export default function PresentationPage() {
     <TransitionSlide key="transition-icebreak" eventState={eventState} programId="opening" titleOverride="조원 인사 & 아이스브레이킹" characterSrc="/characters/cheolsu.png" characterAlt="철수" subtitle="서로 얼굴 그려주기 · MBTI" />,
     <JumpGameSlide key="jump-game" />,
     <TransitionSlide key="transition-lunch" eventState={eventState} programId="lunch" characterSrc="/characters/maenggu.png" characterAlt="맹구" />,
+    <LeaderTimeSlide key="goeun-time" leaderId="goeun" />,
+    <LeaderTimeSlide key="sanghee-time" leaderId="sanghee" />,
     <RecreationSlide key="recreation" />,
     <WorshipSlide key="worship" slideKey="worship" showLyricNav={false} />,
     <MessageSlide key="message" />,
