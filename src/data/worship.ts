@@ -543,6 +543,15 @@ const chorusB = toSlides([
 ]);
 const forever = toSlides([["영원히"]]);
 const returnToJesus = toSlides([["나 다시 예수께", "돌아가려 하네"]]);
+// 나를 세상의 빛으로
+const verseC = toSlides([["나를 세상의 빛으로", "부르신 주님 비추소서"], ["나도 주님의 빛을 비추리라"]]);
+const chorusC = toSlides([["어둠을 밝히는 빛", "온 세상을 비추는 빛"], ["산 위의 마을이", "숨기지 못하네"]]);
+// 키업 이후 "예배합니다" 구간 (구 '완전하신 나의 주')
+const worshipCoda = toSlides([["예배합니다 찬양합니다", "주님만 날 다스리소서"], ["예배합니다 찬양합니다", "주님 홀로 높임 받으소서"]]);
+// 당신이 지쳐서
+const verseD1 = toSlides([["당신이 지쳐서 기도할 수 없고", "눈물이 빗물처럼 흘러내릴 때"], ["주님은 우리 연약함을 아시고", "사랑으로 인도하시네"]]);
+const verseD2 = toSlides([["당신이 외로이 홀로 남았을 때", "당신은 누구에게 위로를 얻나"], ["주님은 아시네 당신의 마음을", "그대 홀로 있지 못함을"]]);
+const chorusD = toSlides([["누군가 널 위하여", "누군가 기도하네"], ["내가 홀로 외로워서 마음이 무너질 때", "누군가 널 위해 기도하네"]]);
 
 /**
  * 기도회 찬양 (합심기도 시간에 부르는 곡) - 악보 기준
@@ -566,10 +575,10 @@ const rawPrayerPlaylist: WorshipSong[] = [
     title: "무너짐 가운데서",
     artist: "WELOVE (위러브)",
     key: "C Major",
-    // 악보 순서: V-P.C-C-V-P.C-C-C-영원히-나 다시 예수께×3-C-영원히×3-V(건반만) → 끝나면 기도 제목 2, 3
+    // 악보 순서: V-P.C-C-V-P.C-C-C-영원히×2-나 다시 예수께×3-C-영원히×3-V(건반만) → 끝나면 기도 제목 2, 3
     slides: [
       ...verseB, ...preChorusB, ...chorusB,
-      ...verseB, ...preChorusB, ...chorusB, ...chorusB, ...forever,
+      ...verseB, ...preChorusB, ...chorusB, ...chorusB, ...forever, ...forever,
       ...returnToJesus, ...returnToJesus, ...returnToJesus,
       ...chorusB, ...forever, ...forever, ...forever,
       ...verseB,
@@ -581,37 +590,29 @@ const rawPrayerPlaylist: WorshipSong[] = [
     id: "prayer-song-1",
     title: "나를 세상의 빛으로",
     artist: "Scott Brenner / 제이어스 편곡",
-    key: "D Major",
-    slides: toSlides([
-      ["나를 세상의 빛으로", "부르신 주님 비추소서"],
-      ["나도 주님의 빛을 비추리라"],
-      ["어둠을 밝히는 빛", "온 세상을 비추는 빛"],
-      ["산 위의 마을이", "숨기지 못하네"],
-    ]),
-  },
-  {
-    id: "prayer-song-2",
-    title: "완전하신 나의 주",
-    artist: "미확인",
-    key: "E Major",
-    slides: toSlides([
-      ["예배합니다 찬양합니다", "주님만 날 다스리소서"],
-      ["예배합니다 찬양합니다", "주님 홀로 높임 받으소서"],
-    ]),
+    key: "D Major → E Major",
+    // 악보 순서: V-V-C-V-V-C-C-(키업)-C×3-C(전반만)-기도 제목 3-C-예배합니다×3 (예배합니다는 키업 이후 E키)
+    slides: [
+      ...verseC, ...verseC, ...chorusC,
+      ...verseC, ...verseC, ...chorusC, ...chorusC,
+      ...chorusC, ...chorusC, ...chorusC,
+      chorusC[0],
+      topicSlide(2),
+      ...chorusC,
+      ...worshipCoda, ...worshipCoda, ...worshipCoda,
+    ],
   },
   {
     id: "prayer-song-3",
     title: "당신이 지쳐서 (누군가 널 위해)",
     artist: "Lanny Wolfe",
-    key: "G Major",
-    slides: toSlides([
-      ["당신이 지쳐서 기도할 수 없고", "눈물이 빗물처럼 흘러내릴 때"],
-      ["주님은 아시네", "당신의 약함을 사랑으로 인도하시네"],
-      ["당신이 외로이 홀로 남았을 때", "당신은 누구에게 위로를 얻나"],
-      ["주님은 아시네", "당신의 마음을 그대 홀로 있지 못함을"],
-      ["누군가 널 위하여", "누군가 기도하네"],
-      ["네가 홀로 외로워서 마음이 무너질 때", "누군가 널 위해 기도하네"],
-    ]),
+    key: "F Major",
+    // 악보 순서: V1-V1·C-V1-V2·C-C → 끝나면 기도 제목 2
+    slides: [
+      ...verseD1, ...verseD1, ...chorusD,
+      ...verseD1, ...verseD2, ...chorusD, ...chorusD,
+      topicSlide(1),
+    ],
   },
   {
     id: "prayer-song-4",
