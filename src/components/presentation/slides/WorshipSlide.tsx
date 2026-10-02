@@ -159,7 +159,9 @@ export default function WorshipSlide({
               <h2 className="mt-[2cqw] max-w-[90%] !font-extrabold text-[max(2.2rem,6cqw)] leading-[1.25] text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.6)]">
                 {topic.title}
               </h2>
-              <p className="mt-[2.4cqw] max-w-[84%] text-[max(1.3rem,2.8cqw)] leading-[1.55] text-white/90">{topic.description}</p>
+              {topic.description && (
+                <p className="mt-[2.4cqw] max-w-[84%] text-[max(1.3rem,2.8cqw)] leading-[1.55] text-white/90">{topic.description}</p>
+              )}
             </div>
           );
         }

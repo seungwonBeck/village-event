@@ -525,33 +525,35 @@ const toSlides = (pages: string[][]): SongSlide[] =>
 // ---- 기도회 찬양 섹션: 악보의 V / P.C / C 단위로 만들어 두고 곡마다 순서대로 이어 붙인다 ----
 // 주의 성소로
 const verse1 = toSlides([["주의 성소로 들어가네", "주의 말씀 있는 곳"], ["죄 씻음과 참 안식을", "누리겠네"]]);
-const verse2 = toSlides([["주의 성소로 들어가서", "참 평안 얻겠네"], ["큰 기쁨과 참 자유로", "찬양드리리"]]);
+const verse2 = toSlides([["주의 성소로 들어가서", "참 평안 얻겠네"], ["큰 기쁨과 감사로", "찬양 드리리"]]);
 const preChorusA = toSlides([["주님 앞에 나오라", "감사함으로 나오라"], ["신실하시며 자비로우신", "주님 앞에 나오라"]]);
 const chorusA = toSlides([["주님 앞에 나아갑니다", "주의 사랑의 품에"], ["크고 놀라운 사랑", "날 온전케 하시네"]]);
 // 무너짐 가운데서
 const verseB = toSlides([
-  ["나 다시 예수께 돌아가려 하네", "넋을 잃고 잃어버린 예배의 자리로"],
-  ["나 다시 예수께 돌아가려 하네", "주의 성실을 의지해 연약한 모습으로"],
+  ["나 다시 예수께", "돌아가려 하네"],
+  ["넋을 잃고 잃어버린", "예배의 자리로"],
+  ["나 다시 예수께", "돌아가려 하네"],
+  ["주의 성실을 의지해", "연약한 모습으로"],
 ]);
 const preChorusB = toSlides([
   ["아버지께서 일하고 계시네", "고요한 날들이 아득하여도"],
-  ["예수 그리스도 주의 이름이", "그 약속을 이루셨듯이 영원히 있겠네"],
+  ["예수 그리스도 주의 이름이", "그 약속을 이루셨듯이"],
 ]);
 const chorusB = toSlides([
-  ["믿음과 소망 그리고 사랑", "아버지와 그의 아들"],
-  ["당신의 영이 우리와 함께", "영원히"],
+  ["영원히 있겠네", "믿음과 소망 그리고 사랑"],
+  ["아버지와 그의 아들", "당신의 영이 우리와 함께"],
 ]);
 const forever = toSlides([["영원히"]]);
 const returnToJesus = toSlides([["나 다시 예수께", "돌아가려 하네"]]);
 // 나를 세상의 빛으로
-const verseC = toSlides([["나를 세상의 빛으로", "부르신 주님 비추소서"], ["나도 주님의 빛을 비추리라"]]);
+const verseC = toSlides([["나를 세상의 빛으로", "부르신 주님"], ["비추소서 나도 주님의", "빛을 비추리라"]]);
 const chorusC = toSlides([["어둠을 밝히는 빛", "온 세상을 비추는 빛"], ["산 위의 마을이", "숨기지 못하네"]]);
 // 키업 이후 "예배합니다" 구간 (구 '완전하신 나의 주')
 const worshipCoda = toSlides([["예배합니다 찬양합니다", "주님만 날 다스리소서"], ["예배합니다 찬양합니다", "주님 홀로 높임 받으소서"]]);
 // 당신이 지쳐서
-const verseD1 = toSlides([["당신이 지쳐서 기도할 수 없고", "눈물이 빗물처럼 흘러내릴 때"], ["주님은 우리 연약함을 아시고", "사랑으로 인도하시네"]]);
-const verseD2 = toSlides([["당신이 외로이 홀로 남았을 때", "당신은 누구에게 위로를 얻나"], ["주님은 아시네 당신의 마음을", "그대 홀로 있지 못함을"]]);
-const chorusD = toSlides([["누군가 널 위하여", "누군가 기도하네"], ["내가 홀로 외로워서 마음이 무너질 때", "누군가 널 위해 기도하네"]]);
+const verseD1 = toSlides([["당신이 지쳐서 기도 할 수 없고", "눈물이 빗물처럼 흘러내릴 때"], ["주님은 우리 연약함을 아시고", "사랑으로 인도하시네"]]);
+const verseD2 = toSlides([["당신이 외로워 홀로 남았을 때", "당신은 누구에게 위로를 얻나"], ["주님은 아시네 당신의 마음을", "그대 홀로 있지 못함을"]]);
+const chorusD = toSlides([["누군가 널 위하여", "누군가 기도하네"], ["내가 홀로 외로워서", "마음이 무너질 때"], ["누군가 널 위해 기도하네"]]);
 
 /**
  * 기도회 찬양 (합심기도 시간에 부르는 곡) - 악보 기준
@@ -575,9 +577,9 @@ const rawPrayerPlaylist: WorshipSong[] = [
     title: "무너짐 가운데서",
     artist: "WELOVE (위러브)",
     key: "C Major",
-    // 악보 순서: V-P.C-C-V-P.C-C-C-영원히×2-나 다시 예수께×3-C-영원히×3-V(건반만) → 끝나면 기도 제목 2, 3
+    // 악보/PPT 순서: V-P.C-C-영원히-V-P.C-C-C-영원히×2-나 다시 예수께×3-C-영원히×3-V(건반만) → 끝나면 기도 제목 2, 3
     slides: [
-      ...verseB, ...preChorusB, ...chorusB,
+      ...verseB, ...preChorusB, ...chorusB, ...forever,
       ...verseB, ...preChorusB, ...chorusB, ...chorusB, ...forever, ...forever,
       ...returnToJesus, ...returnToJesus, ...returnToJesus,
       ...chorusB, ...forever, ...forever, ...forever,
@@ -591,15 +593,15 @@ const rawPrayerPlaylist: WorshipSong[] = [
     title: "나를 세상의 빛으로",
     artist: "Scott Brenner / 제이어스 편곡",
     key: "D Major → E Major",
-    // 악보 순서: V-V-C-V-V-C-C-(키업)-C×3-C(전반만)-기도 제목 3-C-예배합니다×3 (예배합니다는 키업 이후 E키)
+    // PPT 순서: V-V-C-V-V-C-C-(키업)-C×4 → 기도 제목 4 → C → 예배합니다×3 (키업 이후 E키) → 기도 제목 5
     slides: [
       ...verseC, ...verseC, ...chorusC,
       ...verseC, ...verseC, ...chorusC, ...chorusC,
-      ...chorusC, ...chorusC, ...chorusC,
-      chorusC[0],
-      topicSlide(2),
+      ...chorusC, ...chorusC, ...chorusC, ...chorusC,
+      topicSlide(3),
       ...chorusC,
       ...worshipCoda, ...worshipCoda, ...worshipCoda,
+      topicSlide(4),
     ],
   },
   {
@@ -607,11 +609,11 @@ const rawPrayerPlaylist: WorshipSong[] = [
     title: "당신이 지쳐서 (누군가 널 위해)",
     artist: "Lanny Wolfe",
     key: "F Major",
-    // 악보 순서: V1-V1·C-V1-V2·C-C → 끝나면 기도 제목 2
+    // 악보/PPT 순서: V1-V1·C-V1-V2·C-C → 끝나면 기도 제목 6
     slides: [
       ...verseD1, ...verseD1, ...chorusD,
       ...verseD1, ...verseD2, ...chorusD, ...chorusD,
-      topicSlide(1),
+      topicSlide(5),
     ],
   },
   {
@@ -620,7 +622,7 @@ const rawPrayerPlaylist: WorshipSong[] = [
     artist: "이영진 (Team Luke Worship)",
     key: "D Major",
     slides: toSlides([
-      ["하나님 주신 열방을", "치유하는 거룩한 꿈을 꾸는 당신은"],
+      ["하나님 주신 열방을 치유하는", "거룩한 꿈을 꾸는 당신은"],
       ["세상이 감당치 못할", "믿음의 사람입니다"],
     ]),
   },
