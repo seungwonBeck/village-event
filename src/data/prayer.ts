@@ -12,27 +12,10 @@ export interface PrayerTopic {
 }
 
 export const defaultPrayerTopics: PrayerTopic[] = [
-  {
-    id: "prayer-1",
-    category: "개인의 믿음",
-    title: "세상의 빛으로 살아가는 우리",
-    description: "학교와 직장, 가정 가운데 그리스도의 향기와 빛을 비추며 선한 영향력을 흘려보내도록",
-    bibleRef: "마태복음 5:16",
-  },
-  {
-    id: "prayer-2",
-    category: "공동체와 사랑방",
-    title: "서로 사랑하며 하나 되는 아포슬 3팀",
-    description: "새로 만난 사랑방 식구들과 서로를 깊이 이해하고 기도로 든든히 세워가는 따뜻한 공동체가 되도록",
-    bibleRef: "요한복음 13:34",
-  },
-  {
-    id: "prayer-3",
-    category: "비전과 세상",
-    title: "청년의 때에 하나님 나라를 꿈꾸며",
-    description: "불안한 현실 속에서도 하나님께서 주신 비전을 붙들고 담대하게 세상으로 나아가도록",
-    bibleRef: "잠언 16:9",
-  },
-
-  // TODO: 기도 인도자 및 팀 기도 제목 수령 후 추가/수정
+  { id: "prayer-1", category: "찬양과 감사", title: "하나님의 아름다우심과 감사를 우리의 입술로 고백합시다", description: "" },
+  { id: "prayer-2", category: "회개", title: "무너졌던 나의 삶과 예배를 되돌아보고 회개합시다", description: "" },
+  { id: "prayer-3", category: "회복", title: "연약한 나와 함께 하시는 하나님을 바라봅시다", description: "" },
+  { id: "prayer-4", category: "세상의 빛", title: "세상에 사랑으로 예수님을 드러낼 수 있길 기도합시다", description: "" },
+  { id: "prayer-5", category: "예배", title: "나를 부르신 곳이 어딘지 & 마음을 지켜 예배할 수 있길 기도합시다", description: "" },
+  { id: "prayer-6", category: "공동체", title: "공동체를 위해서 기도합시다", description: "" },
 ];
