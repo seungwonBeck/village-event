@@ -40,6 +40,10 @@ export default function RecreationSlide() {
   const [currentQuestion, setCurrentQuestion] = useState<string | null>(null);
   const [isRollingQuestion, setIsRollingQuestion] = useState<boolean>(false);
 
+  // 조별 문제 상태: 선택한 조와, 조마다 이미 뽑은 문제 번호 (같은 문제가 다시 나오지 않게 한다)
+  const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
+  const [drawnByTeam, setDrawnByTeam] = useState<Record<string, number[]>>({});
+
   // 참가자 추첨 상태
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [drawnWinner, setDrawnWinner] = useState<string | null>(null);
@@ -70,6 +74,8 @@ export default function RecreationSlide() {
     setIsTimerRunning(false);
     if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
     setCurrentQuestion(null);
+    setSelectedTeamId(currentGame.teamQuestions?.[0]?.teamId ?? null);
+    setDrawnByTeam({});
   }, [currentGame]);
 
   // 타이머 인터벌
@@ -112,23 +118,50 @@ export default function RecreationSlide() {
     }
   };
 
+  // 현재 선택된 조의 문제 목록 (조별 문제가 없는 게임이면 null)
+  const activeTeam = currentGame.teamQuestions?.find((t) => t.teamId === selectedTeamId) ?? null;
+  const drawnCount = activeTeam ? (drawnByTeam[activeTeam.teamId] ?? []).length : 0;
+
   // 랜덤 문제 뽑기 함수
   const handleDrawQuestion = () => {
-    const qList = currentGame.questions || [];
-    if (qList.length === 0) {
-      setCurrentQuestion("준비된 문제가 없습니다.");
-      return;
+    // 조별 문제 게임이면 선택한 조의 문제 중 아직 안 나온 것만 뽑는다
+    let pool: { text: string; index: number }[];
+    if (activeTeam) {
+      const drawn = drawnByTeam[activeTeam.teamId] ?? [];
+      pool = activeTeam.questions
+        .map((text, index) => ({ text, index }))
+        .filter((q) => !drawn.includes(q.index));
+      if (pool.length === 0) {
+        setCurrentQuestion(`${activeTeam.label} 문제를 모두 뽑았어요!`);
+        return;
+      }
+    } else {
+      const qList = currentGame.questions || [];
+      if (qList.length === 0) {
+        setCurrentQuestion("준비된 문제가 없습니다.");
+        return;
+      }
+      pool = qList.map((text, index) => ({ text, index }));
     }
 
+    // 최종 문제를 먼저 정해 두고, 룰렛처럼 돌다가 마지막에 그 문제로 멈춘다
+    const finalPick = pool[Math.floor(Math.random() * pool.length)];
     setIsRollingQuestion(true);
     let count = 0;
     const interval = setInterval(() => {
-      const randomIdx = Math.floor(Math.random() * qList.length);
-      setCurrentQuestion(qList[randomIdx]);
       count++;
       if (count > 10) {
         clearInterval(interval);
+        setCurrentQuestion(finalPick.text);
         setIsRollingQuestion(false);
+        if (activeTeam) {
+          setDrawnByTeam((prev) => ({
+            ...prev,
+            [activeTeam.teamId]: [...(prev[activeTeam.teamId] ?? []), finalPick.index],
+          }));
+        }
+      } else {
+        setCurrentQuestion(pool[Math.floor(Math.random() * pool.length)].text);
       }
     }, 80);
   };
@@ -329,7 +362,28 @@ export default function RecreationSlide() {
                 <HelpCircle className="w-5 h-5 text-black" />
               </div>
               <div>
-                <span className="text-xs font-black text-neutral-600 block">게임 제시어 / 문제</span>
+                {currentGame.teamQuestions && (
+                  <div className="mb-2 flex flex-wrap gap-1">
+                    {currentGame.teamQuestions.map((t) => (
+                      <button
+                        key={t.teamId}
+                        onClick={() => {
+                          setSelectedTeamId(t.teamId);
+                          setCurrentQuestion(null);
+                        }}
+                        className={`px-2 py-0.5 border-2 border-black rounded-lg text-xs font-black ${
+                          selectedTeamId === t.teamId ? "bg-crayon-pink text-white" : "bg-white"
+                        }`}
+                      >
+                        {t.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                <span className="text-xs font-black text-neutral-600 block">
+                  게임 제시어 / 문제
+                  {activeTeam && ` (${activeTeam.label} ${drawnCount}/${activeTeam.questions.length})`}
+                </span>
                 <span className="text-lg font-black text-neutral-900">
                   {currentQuestion || "오른쪽 버튼을 눌러 문제를 뽑아주세요!"}
                 </span>
