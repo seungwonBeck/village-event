@@ -16,10 +16,8 @@ interface TreasureHuntSlideProps {
 const TIMER_SECONDS = 7 * 60;
 
 const GAME_STEPS = [
-  "교회 곳곳에 숨겨진 우리 조의 색깔 퍼즐을 찾아요.",
+  "생명홀 4층 곳곳에 숨겨진 우리 조의 색깔 퍼즐을 찾아요.",
   "찾은 퍼즐을 조원들과 함께 하나의 퍼즐로 완성해요.",
-  "우리는 세상에 어떤 빛을 비추고 싶은지 한 단어로 적어요.",
-  "빛의 단어까지 적었다면 완성된 퍼즐을 진행자에게 제출해요.",
 ];
 
 const cardClass =
@@ -79,9 +77,6 @@ function StepsCard() {
           </li>
         ))}
       </ol>
-      <p className="mt-5 sm:mt-8 rounded-2xl border-3 border-dashed border-black bg-crayon-yellow/60 px-4 py-3 text-lg sm:text-3xl font-black text-neutral-900 break-keep">
-        🏆 선착순 3조에게 점수가 차등 분배돼요.
-      </p>
     </div>
   );
 }
