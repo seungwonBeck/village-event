@@ -81,7 +81,7 @@ export default function IntroSlide() {
                 주제
               </span>
               <span className="text-sm sm:text-base md:text-lg font-black text-crayon-red">
-                예배 ({event.bibleVerse})
+                세상의 빛 ({event.bibleVerse})
               </span>
             </div>
           </div>
