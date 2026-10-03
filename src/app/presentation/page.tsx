@@ -27,7 +27,7 @@ export default function PresentationPage() {
   const [eventState, setEventState] = useState<EventState>(defaultEventState);
   const [currentSlide, setCurrentSlide] = useState<number>(0);
 
-  // 슬라이드 컴포넌트 목록 (총 19개 기본 슬라이드)
+  // 슬라이드 컴포넌트 목록 (총 18개 기본 슬라이드)
   const slides = [
     <IntroSlide key="intro" />,
     <ScheduleSlide key="schedule" eventState={eventState} />,
@@ -39,7 +39,6 @@ export default function PresentationPage() {
     <TreasureHuntSlide key="goeun-steps" step="steps" />,
     <TreasureHuntSlide key="goeun-rule" step="rule" />,
     <TreasureHuntSlide key="goeun-timer" step="timer" />,
-    <TreasureHuntSlide key="goeun-interview" step="interview" />,
     <LeaderTimeSlide key="sanghee-time" leaderId="sanghee" />,
     <RecreationSlide key="recreation" />,
     <WorshipSlide key="worship" slideKey="worship" showLyricNav={false} />,

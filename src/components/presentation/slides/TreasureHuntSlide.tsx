@@ -6,7 +6,7 @@ import confetti from "canvas-confetti";
 import { Play, Pause, RotateCcw } from "lucide-react";
 import { characterPngs } from "@/components/event-art";
 
-export type TreasureHuntStep = "title" | "steps" | "rule" | "timer" | "interview";
+export type TreasureHuntStep = "title" | "steps" | "rule" | "timer";
 
 interface TreasureHuntSlideProps {
   step: TreasureHuntStep;
@@ -27,7 +27,7 @@ const pillClass =
 
 /**
  * 고은 사랑방 게임 「떡잎유치원 보물찾기 : 우리의 빛을 찾으러 가요」 슬라이드
- * 제목 → 게임 순서 → 규칙 → 7분 타이머 → 인터뷰 순서로 5장이 이어진다
+ * 제목 → 게임 순서 → 규칙 → 7분 타이머 순서로 4장이 이어진다
  */
 export default function TreasureHuntSlide({ step }: TreasureHuntSlideProps) {
   return (
@@ -36,7 +36,6 @@ export default function TreasureHuntSlide({ step }: TreasureHuntSlideProps) {
       {step === "steps" && <StepsCard />}
       {step === "rule" && <RuleCard />}
       {step === "timer" && <TimerCard />}
-      {step === "interview" && <InterviewCard />}
     </div>
   );
 }
@@ -160,21 +159,6 @@ function TimerCard() {
           <RotateCcw className="w-5 h-5 sm:w-7 sm:h-7" /> 리셋
         </button>
       </div>
-    </div>
-  );
-}
-
-// 슬라이드 5: 인터뷰 시간
-function InterviewCard() {
-  return (
-    <div className={cardClass}>
-      <div className={pillClass}>🎤 INTERVIEW TIME 🎤</div>
-      <h1 className="text-3xl sm:text-5xl md:text-7xl font-black text-neutral-900 tracking-tight break-keep drop-shadow-sm">
-        각 조의 이야기를 들어볼게요!
-      </h1>
-      <p className="mt-6 sm:mt-10 rounded-2xl border-3 border-dashed border-black bg-crayon-yellow/60 px-4 py-4 text-lg sm:text-3xl font-black text-neutral-900 break-keep leading-snug">
-        [마태복음 5:16] &ldquo;이같이 너희 빛이 사람 앞에 비치게 하여&rdquo;
-      </p>
     </div>
   );
 }
