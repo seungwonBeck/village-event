@@ -4,14 +4,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { event } from "@/data/event";
 import { recreationGames, RecreationGame } from "@/data/recreation";
 import { realtimeHub } from "@/lib/realtime";
-import { TeamScore, Participant } from "@/types";
+import { TeamScore } from "@/types";
 import confetti from "canvas-confetti";
 import {
   Play,
   Pause,
   RotateCcw,
   Trophy,
-  Users,
   HelpCircle,
   Clock,
   Shuffle,
@@ -44,27 +43,16 @@ export default function RecreationSlide() {
   const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
   const [drawnByTeam, setDrawnByTeam] = useState<Record<string, number[]>>({});
 
-  // 참가자 추첨 상태
-  const [participants, setParticipants] = useState<Participant[]>([]);
-  const [drawnWinner, setDrawnWinner] = useState<string | null>(null);
-  const [isDrawing, setIsDrawing] = useState<boolean>(false);
-
-  // 초기 점수 및 참가자 동기화
+  // 초기 점수 동기화
   useEffect(() => {
     setScores(realtimeHub.getScores());
-    setParticipants(realtimeHub.getParticipants());
 
     const unsubScores = realtimeHub.subscribe("scores_updated", (newScores: TeamScore[]) => {
       setScores(newScores);
     });
 
-    const unsubParticipants = realtimeHub.subscribe("participant_joined", (p: Participant) => {
-      setParticipants((prev) => [...prev.filter((item) => item.id !== p.id), p]);
-    });
-
     return () => {
       unsubScores();
-      unsubParticipants();
     };
   }, []);
 
@@ -166,34 +154,6 @@ export default function RecreationSlide() {
     }, 80);
   };
 
-  // 랜덤 참가자 추첨 함수 (룰렛 효과)
-  const handleDrawParticipant = () => {
-    const list =
-      participants.length > 0
-        ? participants.map((p) => p.nickname)
-        : ["홍평안", "김은혜", "이지혜", "박요셉", "김다윗", "최소망", "정온유", "윤기쁨"];
-
-    setIsDrawing(true);
-    setDrawnWinner(null);
-
-    let step = 0;
-    const totalSteps = 20;
-    const interval = setInterval(() => {
-      const idx = Math.floor(Math.random() * list.length);
-      setDrawnWinner(list[idx]);
-      step++;
-      if (step >= totalSteps) {
-        clearInterval(interval);
-        setIsDrawing(false);
-        confetti({
-          particleCount: 150,
-          spread: 90,
-          origin: { y: 0.5 },
-        });
-      }
-    }, 100);
-  };
-
   return (
     <div className="relative w-full h-full flex flex-col justify-between py-4 px-3 sm:py-5 sm:px-8 md:px-10 z-10 gap-4 sm:gap-6">
       {/* 상단 탭: 게임 1, 2, 3, 4 선택 */}
@@ -223,7 +183,7 @@ export default function RecreationSlide() {
         </div>
       </div>
 
-      {/* 중앙 메인: 게임 설명은 한 줄 전체, 아래에 점수 40% · 타이머 30% · 제시어 20% · 랜덤추천 10% */}
+      {/* 중앙 메인: 게임 설명은 한 줄 전체, 아래에 점수 40% · 문제 뽑기 30% · 타이머 30% */}
       <div className="my-auto flex w-full flex-col gap-4">
         <div className="pop-card bg-white p-6 border-4 border-black relative">
             <div className="flex items-center justify-between mb-2">
@@ -312,49 +272,6 @@ export default function RecreationSlide() {
 
           </div>
           <div className="min-w-0 lg:basis-[30%]">
-          {/* 대형 타이머 카드 */}
-          <div className="pop-card bg-crayon-yellow p-5 border-4 border-black text-center h-full">
-            <span className="text-xs font-black text-neutral-700 tracking-wider uppercase block mb-1">
-              GAME TIMER
-            </span>
-            <div className="text-6xl font-black font-mono tracking-tight text-black my-1">
-              {formatTime(timeLeft)}
-            </div>
-
-            {/* 타이머 제어 버튼 그룹 */}
-            <div className="flex items-center justify-center gap-3 mt-3">
-              <button
-                onClick={() => setIsTimerRunning(!isTimerRunning)}
-                className={`pop-btn px-5 py-2 text-sm ${
-                  isTimerRunning
-                    ? "bg-crayon-red text-white hover:bg-red-600"
-                    : "bg-crayon-green text-black hover:bg-emerald-400"
-                }`}
-              >
-                {isTimerRunning ? (
-                  <>
-                    <Pause className="w-4 h-4" /> 일시정지
-                  </>
-                ) : (
-                  <>
-                    <Play className="w-4 h-4" /> Start 시작
-                  </>
-                )}
-              </button>
-              <button
-                onClick={() => {
-                  setIsTimerRunning(false);
-                  setTimeLeft(currentGame.durationSeconds);
-                }}
-                className="pop-btn px-4 py-2 bg-white text-black text-sm hover:bg-neutral-100"
-              >
-                <RotateCcw className="w-4 h-4" /> 리셋
-              </button>
-            </div>
-          </div>
-
-          </div>
-          <div className="min-w-0 lg:basis-[20%]">
           {/* 랜덤 문제 카드 */}
           <div className="pop-card bg-crayon-yellow/40 p-4 border-3 border-black flex flex-col justify-between gap-3 h-full">
             <div className="flex flex-col items-start gap-2">
@@ -400,29 +317,48 @@ export default function RecreationSlide() {
             </button>
           </div>
           </div>
-          <div className="min-w-0 lg:basis-[10%]">
-          {/* 랜덤 참가자 추첨 룰렛 */}
-          <div className="pop-card bg-white p-3.5 border-3 border-black flex flex-col items-center justify-between gap-2 text-center h-full">
-            <div className="flex flex-col items-center gap-2 overflow-hidden">
-              <div className="w-9 h-9 rounded-xl bg-crayon-pink border-2 border-black flex items-center justify-center text-white shrink-0 shadow-pop-sm">
-                <Users className="w-4 h-4" />
-              </div>
-              <div className="overflow-hidden">
-                <span className="text-xs font-black text-neutral-500 block">참가자 랜덤 추첨</span>
-                <span className="text-base font-black truncate block text-crayon-pink">
-                  {drawnWinner ? `🎉 ${drawnWinner} 님!` : "버튼을 눌러 뽑아보세요"}
-                </span>
-              </div>
+          <div className="min-w-0 lg:basis-[30%]">
+          {/* 대형 타이머 카드 */}
+          <div className="pop-card bg-crayon-yellow p-5 border-4 border-black text-center h-full">
+            <span className="text-xs font-black text-neutral-700 tracking-wider uppercase block mb-1">
+              GAME TIMER
+            </span>
+            <div className="text-6xl font-black font-mono tracking-tight text-black my-1">
+              {formatTime(timeLeft)}
             </div>
 
-            <button
-              onClick={handleDrawParticipant}
-              disabled={isDrawing}
-              className="pop-btn px-3.5 py-1.5 bg-crayon-blue text-black text-xs hover:bg-sky-300 shrink-0"
-            >
-              {isDrawing ? "추첨 중..." : "추첨하기"}
-            </button>
+            {/* 타이머 제어 버튼 그룹 */}
+            <div className="flex items-center justify-center gap-3 mt-3">
+              <button
+                onClick={() => setIsTimerRunning(!isTimerRunning)}
+                className={`pop-btn px-5 py-2 text-sm ${
+                  isTimerRunning
+                    ? "bg-crayon-red text-white hover:bg-red-600"
+                    : "bg-crayon-green text-black hover:bg-emerald-400"
+                }`}
+              >
+                {isTimerRunning ? (
+                  <>
+                    <Pause className="w-4 h-4" /> 일시정지
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-4 h-4" /> Start 시작
+                  </>
+                )}
+              </button>
+              <button
+                onClick={() => {
+                  setIsTimerRunning(false);
+                  setTimeLeft(currentGame.durationSeconds);
+                }}
+                className="pop-btn px-4 py-2 bg-white text-black text-sm hover:bg-neutral-100"
+              >
+                <RotateCcw className="w-4 h-4" /> 리셋
+              </button>
+            </div>
           </div>
+
           </div>
         </div>
       </div>
