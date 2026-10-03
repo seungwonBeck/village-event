@@ -47,15 +47,14 @@ export const presentationSlidesInfo = [
   { id: "goeun-steps", title: "보물찾기 게임 순서", badge: "08", icon: "📋", defaultBg: "/images/presentation/frame-toys.jpg" },
   { id: "goeun-rule", title: "보물찾기 게임 규칙", badge: "09", icon: "⚠️", defaultBg: "/images/presentation/frame-toys.jpg" },
   { id: "goeun-timer", title: "보물찾기 7분 타이머", badge: "10", icon: "⏱️", defaultBg: "/images/presentation/frame-toys.jpg" },
-  { id: "goeun-interview", title: "보물찾기 인터뷰", badge: "11", icon: "🎤", defaultBg: "/images/presentation/frame-toys.jpg" },
-  { id: "sanghee-time", title: "상희 가장님 Time", badge: "12", icon: "🎮", defaultBg: "/images/presentation/frame-toys.jpg" },
-  { id: "recreation", title: "레크 배틀 & 점수", badge: "13", icon: "🎮", defaultBg: "/images/presentation/frame-toys.jpg" },
-  { id: "worship", title: "찬양 & 가사", badge: "14", icon: "🎵", defaultBg: "/images/presentation/bg-kindergarten.jpg" },
-  { id: "message", title: "나눔 시간", badge: "15", icon: "📖", defaultBg: "/images/presentation/frame-toys.jpg" },
-  { id: "prayer-song", title: "기도회 찬양", badge: "16", icon: "🕊️", defaultBg: "/images/presentation/bg-kindergarten.jpg" },
-  { id: "community", title: "사랑방 가장 소개", badge: "17", icon: "💛", defaultBg: "/images/presentation/frame-toys.jpg" },
-  { id: "result", title: "점수 발표 (1등 조)", badge: "18", icon: "🏆", defaultBg: "/images/presentation/frame-toys.jpg" },
-  { id: "ending", title: "엔딩 & 단체사진", badge: "19", icon: "🎉", defaultBg: "/images/presentation/bg-kindergarten.jpg" },
+  { id: "sanghee-time", title: "상희 가장님 Time", badge: "11", icon: "🎮", defaultBg: "/images/presentation/frame-toys.jpg" },
+  { id: "recreation", title: "레크 배틀 & 점수", badge: "12", icon: "🎮", defaultBg: "/images/presentation/frame-toys.jpg" },
+  { id: "worship", title: "찬양 & 가사", badge: "13", icon: "🎵", defaultBg: "/images/presentation/bg-kindergarten.jpg" },
+  { id: "message", title: "나눔 시간", badge: "14", icon: "📖", defaultBg: "/images/presentation/frame-toys.jpg" },
+  { id: "prayer-song", title: "기도회 찬양", badge: "15", icon: "🕊️", defaultBg: "/images/presentation/bg-kindergarten.jpg" },
+  { id: "community", title: "사랑방 가장 소개", badge: "16", icon: "💛", defaultBg: "/images/presentation/frame-toys.jpg" },
+  { id: "result", title: "점수 발표 (1등 조)", badge: "17", icon: "🏆", defaultBg: "/images/presentation/frame-toys.jpg" },
+  { id: "ending", title: "엔딩 & 단체사진", badge: "18", icon: "🎉", defaultBg: "/images/presentation/bg-kindergarten.jpg" },
 ];
 
 /**

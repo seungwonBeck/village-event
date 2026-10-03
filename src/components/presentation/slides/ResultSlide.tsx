@@ -30,7 +30,7 @@ export default function ResultSlide() {
   useEffect(() => {
     const saved = realtimeHub.getScores();
     setTeams(saved);
-    setInputs(Object.fromEntries(saved.map((t) => [t.id, String(t.score)])));
+    setInputs(Object.fromEntries(saved.map((t) => [t.id, t.score > 0 ? String(t.score) : ""])));
     return () => {
       stopEffects();
       if (timerRef.current) clearTimeout(timerRef.current);
@@ -143,13 +143,18 @@ export default function ResultSlide() {
                   {team.name}
                 </span>
                 <span className="flex items-center gap-2">
+                  {/* 모두가 같이 보는 화면이라 점수는 비밀번호처럼 별표(*)로만 보이게 한다 */}
                   <input
-                    type="number"
+                    type="password"
                     inputMode="numeric"
-                    min={0}
+                    autoComplete="new-password"
+                    maxLength={4}
+                    placeholder="****"
                     value={inputs[team.id] ?? ""}
-                    onChange={(e) => setInputs((prev) => ({ ...prev, [team.id]: e.target.value }))}
-                    className="w-28 rounded-xl border-3 border-black bg-white px-3 py-1.5 text-right text-2xl font-black text-crayon-red outline-none focus:bg-crayon-yellow/40 sm:w-36 sm:text-3xl"
+                    onChange={(e) =>
+                      setInputs((prev) => ({ ...prev, [team.id]: e.target.value.replace(/\D/g, "") }))
+                    }
+                    className="w-28 rounded-xl border-3 border-black bg-white px-3 py-1.5 text-right text-2xl font-black tracking-widest text-crayon-red outline-none placeholder:text-neutral-300 focus:bg-crayon-yellow/40 sm:w-36 sm:text-3xl"
                     aria-label={`${team.name} 점수`}
                   />
                   <span className="text-lg font-black sm:text-2xl">점</span>
