@@ -416,7 +416,7 @@ const rawWorshipPlaylist: WorshipSong[] = [
       },
       {
         slideIndex: 2,
-        lines: ["더욱 진실한 예배드리네"],
+        lines: ["더욱 진실한 예배드리네", "주님을 향한"],
       },
       {
         slideIndex: 3,
@@ -424,7 +424,7 @@ const rawWorshipPlaylist: WorshipSong[] = [
       },
       {
         slideIndex: 4,
-        lines: ["더욱 진실한 예배드리네"],
+        lines: ["더욱 진실한 예배드리네", "주님을 향한"],
       },
       {
         slideIndex: 5,
@@ -489,14 +489,6 @@ const rawWorshipPlaylist: WorshipSong[] = [
       {
         slideIndex: 20,
         lines: ["중심 잃은 예배 내려놓고", "이제 나 돌아와 주님만 예배해요"],
-      },
-      {
-        slideIndex: 21,
-        lines: ["찬양의 열기 모두 끝나면", "주 앞에 나와"],
-      },
-      {
-        slideIndex: 22,
-        lines: ["더욱 진실한 예배드리네"],
       },
     ],
   },

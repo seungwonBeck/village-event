@@ -35,7 +35,8 @@ const SLIDES = [
   { no: "15", key: "message", en: "MESSAGE", ko: "나눔 시간" },
   { no: "16", key: "prayer-song", en: "PRAYER WORSHIP", ko: "기도회 찬양" },
   { no: "17", key: "community", en: "COMMUNITY", ko: "사랑방 소개" },
-  { no: "18", key: "ending", en: "ENDING", ko: "마무리 & 사진" },
+  { no: "18", key: "result", en: "RESULT", ko: "점수 발표 (1등)" },
+  { no: "19", key: "ending", en: "ENDING", ko: "마무리 & 사진" },
 ];
 
 const cardClass = "rounded-3xl border-3 border-black bg-white p-4 shadow-pop-sm";

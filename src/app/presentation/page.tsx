@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import UiScale from "@/components/ui-scale";
-import ScoreEditor from "@/components/presentation/ScoreEditor";
 import SlideContainer from "@/components/presentation/SlideContainer";
 import IntroSlide from "@/components/presentation/slides/IntroSlide";
 import ScheduleSlide from "@/components/presentation/slides/ScheduleSlide";
@@ -15,6 +14,7 @@ import { prayerPlaylist } from "@/data/worship";
 import JumpGameSlide from "@/components/presentation/slides/JumpGameSlide";
 import TreasureHuntSlide from "@/components/presentation/slides/TreasureHuntSlide";
 import LeaderTimeSlide from "@/components/presentation/slides/LeaderTimeSlide";
+import ResultSlide from "@/components/presentation/slides/ResultSlide";
 import EndingSlide from "@/components/presentation/slides/EndingSlide";
 import { realtimeHub, defaultEventState } from "@/lib/realtime";
 import { EventState } from "@/types";
@@ -27,7 +27,7 @@ export default function PresentationPage() {
   const [eventState, setEventState] = useState<EventState>(defaultEventState);
   const [currentSlide, setCurrentSlide] = useState<number>(0);
 
-  // 슬라이드 컴포넌트 목록 (총 18개 기본 슬라이드)
+  // 슬라이드 컴포넌트 목록 (총 19개 기본 슬라이드)
   const slides = [
     <IntroSlide key="intro" />,
     <ScheduleSlide key="schedule" eventState={eventState} />,
@@ -46,6 +46,7 @@ export default function PresentationPage() {
     <MessageSlide key="message" />,
     <WorshipSlide key="prayer-song" slideKey="prayer-song" playlist={prayerPlaylist} footerLabel="기도회 찬양" showLyricNav={false} />,
     <CommunitySlide key="community" />,
+    <ResultSlide key="result" />,
     <EndingSlide key="ending" />,
   ];
 
@@ -102,8 +103,6 @@ export default function PresentationPage() {
         {/* 현재 활성화된 슬라이드 렌더링 */}
         {slides[currentSlide] || slides[0]}
       </SlideContainer>
-      {/* 마지막 3페이지에서는 게임 점수를 바로 고칠 수 있는 점수 편집 패널을 띄운다 */}
-      {currentSlide >= totalSlides - 3 && <ScoreEditor />}
     </div>
   );
 }
