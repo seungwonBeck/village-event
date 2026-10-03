@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import UiScale from "@/components/ui-scale";
+import ScoreEditor from "@/components/presentation/ScoreEditor";
 import SlideContainer from "@/components/presentation/SlideContainer";
 import IntroSlide from "@/components/presentation/slides/IntroSlide";
 import ScheduleSlide from "@/components/presentation/slides/ScheduleSlide";
@@ -101,6 +102,8 @@ export default function PresentationPage() {
         {/* 현재 활성화된 슬라이드 렌더링 */}
         {slides[currentSlide] || slides[0]}
       </SlideContainer>
+      {/* 마지막 3페이지에서는 게임 점수를 바로 고칠 수 있는 점수 편집 패널을 띄운다 */}
+      {currentSlide >= totalSlides - 3 && <ScoreEditor />}
     </div>
   );
 }
