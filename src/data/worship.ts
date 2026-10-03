@@ -612,22 +612,14 @@ const rawPrayerPlaylist: WorshipSong[] = [
   },
 ];
 
-// 같은 가사 화면은 한 번만 남기고 번호를 다시 매긴다 (반복 구간은 가사 네비게이션으로 바로 이동)
-const dedupeSlides = (song: WorshipSong): WorshipSong => {
-  const seen = new Set<string>();
-  const slides = song.slides
-    .filter((slide) => {
-      const key = slide.lines.join("|");
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    })
-    .map((slide, i) => ({ ...slide, slideIndex: i + 1 }));
-  return { ...song, slides };
-};
+// 찬양은 PPT 순서(반복 구간 포함)를 그대로 쓰므로 중복을 지우지 않고 번호만 다시 매긴다
+const renumberSlides = (song: WorshipSong): WorshipSong => ({
+  ...song,
+  slides: song.slides.map((slide, i) => ({ ...slide, slideIndex: i + 1 })),
+});
 
-export const worshipPlaylist: WorshipSong[] = rawWorshipPlaylist.map(dedupeSlides);
-// 기도회 찬양은 악보 순서(반복 포함)를 그대로 쓰므로 중복을 지우지 않고 번호만 다시 매긴다
+export const worshipPlaylist: WorshipSong[] = rawWorshipPlaylist.map(renumberSlides);
+// 기도회 찬양도 악보 순서(반복 포함)를 그대로 쓴다
 export const prayerPlaylist: WorshipSong[] = rawPrayerPlaylist.map((song) => ({
   ...song,
   slides: song.slides.map((slide, i) => ({ ...slide, slideIndex: i + 1 })),
