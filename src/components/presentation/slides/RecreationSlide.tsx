@@ -153,9 +153,56 @@ export default function RecreationSlide() {
         </div>
       </div>
 
-      {/* 중앙 메인: 게임 설명은 한 줄 전체, 아래에 문제 뽑기 50% · 타이머 50% */}
+      {/* 중앙 메인: 위에 문제 뽑기(전체 폭), 아래에 게임 설명 70% · 타이머 30% */}
       <div className="my-auto flex w-full flex-col gap-4">
-        <div className="pop-card bg-white p-6 border-4 border-black relative">
+        {/* 랜덤 문제 카드 */}
+        <div className="pop-card flex flex-col gap-4 border-4 border-black bg-crayon-yellow/40 p-5 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex min-w-0 items-center gap-4">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border-3 border-black bg-crayon-blue shadow-pop-sm">
+              <HelpCircle className="h-7 w-7 text-black" />
+            </div>
+            <div className="min-w-0">
+              {currentGame.teamQuestions && (
+                <div className="mb-2 flex flex-wrap gap-1.5">
+                  {currentGame.teamQuestions.map((t) => (
+                    <button
+                      key={t.teamId}
+                      onClick={() => {
+                        setSelectedTeamId(t.teamId);
+                        setCurrentQuestion(null);
+                      }}
+                      className={`rounded-lg border-2 border-black px-3 py-1 text-sm font-black ${
+                        selectedTeamId === t.teamId ? "bg-crayon-pink text-white" : "bg-white"
+                      }`}
+                    >
+                      {t.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+              <span className="block text-xs font-black text-neutral-600">
+                게임 제시어 / 문제
+                {activeTeam && ` (${activeTeam.label} ${drawnCount}/${activeTeam.questions.length})`}
+              </span>
+              <span className="block break-keep text-3xl font-black text-neutral-900 sm:text-5xl">
+                {currentQuestion || "오른쪽 버튼을 눌러 문제를 뽑아주세요!"}
+              </span>
+            </div>
+          </div>
+
+          <button
+            onClick={handleDrawQuestion}
+            disabled={isRollingQuestion}
+            className="pop-btn shrink-0 justify-center bg-crayon-pink px-6 py-3 text-lg text-white hover:bg-pink-500 sm:text-xl"
+          >
+            <Shuffle className="h-5 w-5" />
+            <span>{isRollingQuestion ? "뽑는 중..." : "문제 뽑기"}</span>
+          </button>
+        </div>
+
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch">
+          <div className="min-w-0 lg:basis-[70%]">
+        <div className="pop-card relative h-full border-4 border-black bg-white p-6">
             <div className="flex items-center justify-between mb-2">
               <span className="pop-tag bg-crayon-yellow text-black font-extrabold text-sm">
                 GAME 0{currentGame.id}
@@ -195,62 +242,14 @@ export default function RecreationSlide() {
               </p>
             )}
           </div>
-
-
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch">
-          <div className="min-w-0 lg:basis-1/2">
-          {/* 랜덤 문제 카드 */}
-          <div className="pop-card bg-crayon-yellow/40 p-4 border-3 border-black flex flex-col justify-between gap-3 h-full">
-            <div className="flex flex-col items-start gap-2">
-              <div className="w-10 h-10 rounded-xl bg-crayon-blue border-2 border-black flex items-center justify-center font-black text-white shadow-pop-sm">
-                <HelpCircle className="w-5 h-5 text-black" />
-              </div>
-              <div>
-                {currentGame.teamQuestions && (
-                  <div className="mb-2 flex flex-wrap gap-1">
-                    {currentGame.teamQuestions.map((t) => (
-                      <button
-                        key={t.teamId}
-                        onClick={() => {
-                          setSelectedTeamId(t.teamId);
-                          setCurrentQuestion(null);
-                        }}
-                        className={`px-2 py-0.5 border-2 border-black rounded-lg text-xs font-black ${
-                          selectedTeamId === t.teamId ? "bg-crayon-pink text-white" : "bg-white"
-                        }`}
-                      >
-                        {t.label}
-                      </button>
-                    ))}
-                  </div>
-                )}
-                <span className="text-xs font-black text-neutral-600 block">
-                  게임 제시어 / 문제
-                  {activeTeam && ` (${activeTeam.label} ${drawnCount}/${activeTeam.questions.length})`}
-                </span>
-                <span className="text-lg font-black text-neutral-900">
-                  {currentQuestion || "아래 버튼을 눌러 문제를 뽑아주세요!"}
-                </span>
-              </div>
-            </div>
-
-            <button
-              onClick={handleDrawQuestion}
-              disabled={isRollingQuestion}
-              className="pop-btn px-4 py-2 bg-crayon-pink text-white text-sm hover:bg-pink-500 shrink-0"
-            >
-              <Shuffle className="w-4 h-4" />
-              <span>{isRollingQuestion ? "뽑는 중..." : "문제 뽑기"}</span>
-            </button>
           </div>
-          </div>
-          <div className="min-w-0 lg:basis-1/2">
+          <div className="min-w-0 lg:basis-[30%]">
           {/* 대형 타이머 카드 */}
-          <div className="pop-card bg-crayon-yellow p-5 border-4 border-black text-center h-full">
+          <div className="pop-card flex h-full flex-col items-center justify-center border-4 border-black bg-crayon-yellow p-5 text-center">
             <span className="text-xs font-black text-neutral-700 tracking-wider uppercase block mb-1">
               GAME TIMER
             </span>
-            <div className="text-6xl font-black font-mono tracking-tight text-black my-1">
+            <div className="text-6xl xl:text-7xl font-black font-mono tracking-tight text-black my-1">
               {formatTime(timeLeft)}
             </div>
 
@@ -285,7 +284,6 @@ export default function RecreationSlide() {
               </button>
             </div>
           </div>
-
           </div>
         </div>
       </div>
