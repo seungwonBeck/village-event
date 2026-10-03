@@ -117,7 +117,7 @@ export default function HomePage() {
                 {[
                   { label: "일시", tone: "bg-shin-yellow", value: `${event.shortDate} ${event.startTime} ~ ${event.endTime}` },
                   { label: "장소", tone: "bg-shin-sky", value: event.location },
-                  { label: "주제", tone: "bg-shin-pink text-white", value: `예배 (${event.bibleVerse})` },
+                  { label: "주제", tone: "bg-shin-pink text-white", value: `세상의 빛 (${event.bibleVerse})` },
                 ].map((row) => (
                   <div key={row.label} className="flex items-center gap-3">
                     <dt className={`shrink-0 rounded-lg border-2 border-black px-3 py-0.5 shadow-pop-sm ${row.tone}`}>
@@ -174,14 +174,14 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl">
           <TapeTitle>오늘의 알림장</TapeTitle>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-ink/80 sm:text-lg">
-            각자의 빛깔을 가진 청년들이 모여 밥 먹고, 게임하고, 예배드려요. 서로의 이야기에 귀 기울이며 하나님을 높이는 하루예요.
+            각자의 빛깔을 가진 청년들이 모여 밥 먹고, 게임하고, 찬양하며 서로의 이야기를 나눠요. 서로의 이야기에 귀 기울이며 하나님을 높이는 하루예요.
           </p>
 
           <div className="mt-12 grid gap-8 sm:grid-cols-3">
             {[
               { emoji: "🍱", tone: "bg-[#FFE9A8]", tilt: "-rotate-2", title: "함께 먹는 점심", body: "금강산도 식후경! 맛있는 점심을 먹으며 어색함을 녹여요.", time: `${getTimeRange("lunch")} 점심 & 교제` },
               { emoji: "🎮", tone: "bg-[#FFC9E0]", tilt: "rotate-1", title: "못말리는 레크리에이션", body: "팀 대항 게임 배틀! 배꼽 빠지는 웃음과 푸짐한 상품이 기다려요.", time: `${getTimeRange("recreation")} 팀 게임 배틀` },
-              { emoji: "🙏", tone: "bg-[#C9EEFB]", tilt: "-rotate-1", title: "뜨거운 찬양과 예배", body: "마음을 다해 찬양하고 말씀과 기도로 은혜를 채워요.", time: `${getTimeRange("worship").split(" ~ ")[0]} ~ ${getTimeRange("prayer").split(" ~ ")[1]} 찬양·말씀·기도` },
+              { emoji: "🙏", tone: "bg-[#C9EEFB]", tilt: "-rotate-1", title: "뜨거운 찬양과 나눔", body: "마음을 다해 찬양하고 나눔과 기도로 은혜를 채워요.", time: `${getTimeRange("worship").split(" ~ ")[0]} ~ ${getTimeRange("prayer").split(" ~ ")[1]} 찬양·나눔·기도` },
             ].map((card) => (
               <article
                 key={card.title}
@@ -364,7 +364,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. 말씀: 구름 하늘 위 스케치북 */}
+      {/* 6. 주제 말씀: 구름 하늘 위 스케치북 */}
       <section className="relative overflow-hidden border-y-3 border-black bg-shin-sky px-4 py-20 md:px-[80px] sm:py-24">
         <span aria-hidden="true" className="absolute -left-10 top-8 h-20 w-56 rounded-full bg-white/80" />
         <span aria-hidden="true" className="absolute right-0 top-16 h-16 w-44 rounded-full bg-white/70" />
