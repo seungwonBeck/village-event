@@ -87,22 +87,22 @@ export const recreationGames: RecreationGame[] = [
       {
         teamId: "team-2",
         label: "2팀",
-        questions: ["설교", "춤", "그물", "낚시", "사진"],
+        questions: ["십자가", "춤", "천사", "낚시", "사진"],
       },
       {
         teamId: "team-3",
         label: "3팀",
-        questions: ["전도", "박수", "노 젓기", "줄넘기", "노래"],
+        questions: ["양", "박수", "물고기", "줄넘기", "노래"],
       },
       {
         teamId: "team-4",
         label: "4팀",
-        questions: ["성경", "우산", "헌금", "자전거", "청소"],
+        questions: ["비둘기", "우산", "별", "자전거", "청소"],
       },
       {
         teamId: "team-5",
         label: "5팀",
-        questions: ["회개", "수영", "환호", "잠", "축구"],
+        questions: ["왕", "수영", "거인", "잠", "축구"],
       },
     ],
   },
