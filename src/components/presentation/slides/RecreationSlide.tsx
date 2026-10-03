@@ -3,20 +3,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { event } from "@/data/event";
 import { recreationGames, RecreationGame } from "@/data/recreation";
-import { realtimeHub } from "@/lib/realtime";
-import { TeamScore } from "@/types";
 import confetti from "canvas-confetti";
 import {
   Play,
   Pause,
   RotateCcw,
-  Trophy,
   HelpCircle,
   Clock,
   Shuffle,
   ChevronRight,
-  Plus,
-  Minus,
 } from "lucide-react";
 
 /**
@@ -32,9 +27,6 @@ export default function RecreationSlide() {
   const [isTimerRunning, setIsTimerRunning] = useState<boolean>(false);
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // 팀 점수판 상태 관리
-  const [scores, setScores] = useState<TeamScore[]>([]);
-
   // 랜덤 문제 추첨 상태
   const [currentQuestion, setCurrentQuestion] = useState<string | null>(null);
   const [isRollingQuestion, setIsRollingQuestion] = useState<boolean>(false);
@@ -42,19 +34,6 @@ export default function RecreationSlide() {
   // 조별 문제 상태: 선택한 조와, 조마다 이미 뽑은 문제 번호 (같은 문제가 다시 나오지 않게 한다)
   const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
   const [drawnByTeam, setDrawnByTeam] = useState<Record<string, number[]>>({});
-
-  // 초기 점수 동기화
-  useEffect(() => {
-    setScores(realtimeHub.getScores());
-
-    const unsubScores = realtimeHub.subscribe("scores_updated", (newScores: TeamScore[]) => {
-      setScores(newScores);
-    });
-
-    return () => {
-      unsubScores();
-    };
-  }, []);
 
   // 게임 변경 시 타이머 리셋
   useEffect(() => {
@@ -95,15 +74,6 @@ export default function RecreationSlide() {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-  };
-
-  // 점수 증감 핸들러
-  const handleScoreChange = (teamId: string, delta: number) => {
-    const updated = realtimeHub.updateScore(teamId, delta);
-    setScores([...updated]);
-    if (delta > 0) {
-      confetti({ particleCount: 30, spread: 50, origin: { y: 0.7 } });
-    }
   };
 
   // 현재 선택된 조의 문제 목록 (조별 문제가 없는 게임이면 null)
@@ -183,7 +153,7 @@ export default function RecreationSlide() {
         </div>
       </div>
 
-      {/* 중앙 메인: 게임 설명은 한 줄 전체, 아래에 점수 40% · 문제 뽑기 30% · 타이머 30% */}
+      {/* 중앙 메인: 게임 설명은 한 줄 전체, 아래에 문제 뽑기 50% · 타이머 50% */}
       <div className="my-auto flex w-full flex-col gap-4">
         <div className="pop-card bg-white p-6 border-4 border-black relative">
             <div className="flex items-center justify-between mb-2">
@@ -228,50 +198,7 @@ export default function RecreationSlide() {
 
 
         <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch">
-          <div className="min-w-0 lg:basis-[40%]">
-          {/* 실시간 팀 점수판 */}
-          <div className="pop-card bg-white p-4 border-3 border-black h-full">
-            <div className="flex items-center justify-between mb-2.5">
-              <div className="flex items-center gap-2">
-                <Trophy className="w-4 h-4 text-amber-500" />
-                <h4 className="font-black text-sm">실시간 팀 점수판</h4>
-              </div>
-              <span className="text-xs font-bold text-neutral-500">클릭하여 점수 증감</span>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2">
-              {scores.map((team) => (
-                <div
-                  key={team.id}
-                  className="border-2 border-black rounded-xl p-2 flex items-center justify-between bg-neutral-50"
-                >
-                  <div>
-                    <span className="text-xs font-black block">{team.name}</span>
-                    <span className="text-xl font-black text-crayon-red">{team.score}점</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <button
-                      onClick={() => handleScoreChange(team.id, -10)}
-                      className="w-6 h-6 border-2 border-black rounded-lg bg-white hover:bg-red-100 flex items-center justify-center font-bold text-xs"
-                      title="-10점"
-                    >
-                      <Minus className="w-3 h-3" />
-                    </button>
-                    <button
-                      onClick={() => handleScoreChange(team.id, 10)}
-                      className="w-6 h-6 border-2 border-black rounded-lg bg-crayon-yellow hover:bg-yellow-300 flex items-center justify-center font-bold text-xs"
-                      title="+10점"
-                    >
-                      <Plus className="w-3 h-3" />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          </div>
-          <div className="min-w-0 lg:basis-[30%]">
+          <div className="min-w-0 lg:basis-1/2">
           {/* 랜덤 문제 카드 */}
           <div className="pop-card bg-crayon-yellow/40 p-4 border-3 border-black flex flex-col justify-between gap-3 h-full">
             <div className="flex flex-col items-start gap-2">
@@ -302,7 +229,7 @@ export default function RecreationSlide() {
                   {activeTeam && ` (${activeTeam.label} ${drawnCount}/${activeTeam.questions.length})`}
                 </span>
                 <span className="text-lg font-black text-neutral-900">
-                  {currentQuestion || "오른쪽 버튼을 눌러 문제를 뽑아주세요!"}
+                  {currentQuestion || "아래 버튼을 눌러 문제를 뽑아주세요!"}
                 </span>
               </div>
             </div>
@@ -317,7 +244,7 @@ export default function RecreationSlide() {
             </button>
           </div>
           </div>
-          <div className="min-w-0 lg:basis-[30%]">
+          <div className="min-w-0 lg:basis-1/2">
           {/* 대형 타이머 카드 */}
           <div className="pop-card bg-crayon-yellow p-5 border-4 border-black text-center h-full">
             <span className="text-xs font-black text-neutral-700 tracking-wider uppercase block mb-1">

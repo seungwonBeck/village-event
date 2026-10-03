@@ -54,7 +54,8 @@ export const presentationSlidesInfo = [
   { id: "message", title: "나눔 시간", badge: "15", icon: "📖", defaultBg: "/images/presentation/frame-toys.jpg" },
   { id: "prayer-song", title: "기도회 찬양", badge: "16", icon: "🕊️", defaultBg: "/images/presentation/bg-kindergarten.jpg" },
   { id: "community", title: "사랑방 가장 소개", badge: "17", icon: "💛", defaultBg: "/images/presentation/frame-toys.jpg" },
-  { id: "ending", title: "엔딩 & 단체사진", badge: "18", icon: "🎉", defaultBg: "/images/presentation/bg-kindergarten.jpg" },
+  { id: "result", title: "점수 발표 (1등 조)", badge: "18", icon: "🏆", defaultBg: "/images/presentation/frame-toys.jpg" },
+  { id: "ending", title: "엔딩 & 단체사진", badge: "19", icon: "🎉", defaultBg: "/images/presentation/bg-kindergarten.jpg" },
 ];
 
 /**
