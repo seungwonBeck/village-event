@@ -2,11 +2,11 @@
 
 import React from "react";
 import { event } from "@/data/event";
-import { BookOpen, Sparkles, User } from "lucide-react";
+import { BookOpen, Sparkles } from "lucide-react";
 
 /**
  * 06 MESSAGE SLIDE
- * 말씀 및 예배 슬라이드 - 차분하고 집중되는 정돈된 분위기
+ * 나눔 시간 슬라이드 - 주제 말씀(세상의 빛)을 보며 서로의 이야기를 나누는 차분한 분위기
  */
 export default function MessageSlide() {
   return (
@@ -21,20 +21,20 @@ export default function MessageSlide() {
         </div>
 
         <div className="pop-tag bg-white text-neutral-800 text-[11px] sm:text-xs font-bold">
-          {event.displayDate} 예배
+          {event.displayDate} 나눔 시간
         </div>
       </div>
 
-      {/* 중앙 메인: 말씀 제목 & 주제 성구 카드 */}
+      {/* 중앙 메인: 나눔 시간 제목 & 주제 성구 카드 */}
       <div className="my-auto max-w-4xl mx-auto w-full text-center flex flex-col items-center">
         <div className="inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-extrabold text-amber-700 mb-2 sm:mb-3 bg-amber-100/80 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full border border-amber-300">
           <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-600" />
-          <span>마태복음 5장 16절</span>
+          <span>세상의 빛 · 마태복음 5장 16절</span>
         </div>
 
-        {/* 말씀 메인 타이틀 */}
+        {/* 나눔 시간 메인 타이틀 */}
         <h1 className="mb-4 text-3xl font-black tracking-tight text-neutral-900 sm:mb-8 sm:text-5xl md:text-7xl lg:text-8xl">
-          세상의 빛
+          나눔 시간
         </h1>
 
         {/* 성경 본문 말씀 구절 카드 (차분하고 정돈된 카드) */}
@@ -46,17 +46,11 @@ export default function MessageSlide() {
             마태복음 5장 16절 (개역개정)
           </div>
         </div>
-
-        {/* 나눔시간 안내 */}
-        <div className="mt-4 sm:mt-8 flex items-center gap-2 font-bold text-xs sm:text-base text-neutral-700 pop-card px-4 sm:px-6 py-2 sm:py-2.5 bg-white/80">
-          <User className="w-4 h-4 sm:w-5 sm:h-5 text-crayon-blue" />
-          <span className="font-black text-black">나눔시간</span>
-        </div>
       </div>
 
       {/* 하단 기도와 묵상 안내 문구 */}
       <div className="plate mx-auto px-4 py-1.5 text-center text-xs font-bold text-neutral-600">
-        말씀을 통해 우리에게 주시는 하나님의 음성에 귀 기울입니다.
+        서로의 이야기에 귀 기울이며 각자의 빛을 나눕니다.
       </div>
     </div>
   );

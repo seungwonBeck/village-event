@@ -60,9 +60,9 @@ export const scheduleList: ScheduleItem[] = [
     timeRange: "13:45 ~ 14:00",
     startTime: "13:45",
     endTime: "14:00",
-    title: "쉬는 시간 & 예배 준비",
+    title: "쉬는 시간 & 찬양 준비",
     subTitle: "마음을 정돈하는 시간",
-    description: "잠시 휴식 후 예배와 찬양을 준비합니다",
+    description: "잠시 휴식 후 찬양을 준비합니다",
     iconName: "Coffee",
   },
   {
@@ -80,9 +80,9 @@ export const scheduleList: ScheduleItem[] = [
     timeRange: "14:30 ~ 15:00",
     startTime: "14:30",
     endTime: "15:00",
-    title: "말씀 / 예배",
+    title: "나눔 시간",
     subTitle: "세상의 빛 (마 5:16)",
-    description: "우리를 부르신 그 자리에서 빛으로 살아가는 우리",
+    description: "우리를 부르신 그 자리에서 빛으로 살아가는 이야기를 함께 나눠요",
     iconName: "BookOpen",
   },
   {

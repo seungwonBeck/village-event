@@ -51,7 +51,7 @@ export const presentationSlidesInfo = [
   { id: "sanghee-time", title: "상희 가장님 Time", badge: "12", icon: "🎮", defaultBg: "/images/presentation/frame-toys.jpg" },
   { id: "recreation", title: "레크 배틀 & 점수", badge: "13", icon: "🎮", defaultBg: "/images/presentation/frame-toys.jpg" },
   { id: "worship", title: "찬양 & 가사", badge: "14", icon: "🎵", defaultBg: "/images/presentation/bg-kindergarten.jpg" },
-  { id: "message", title: "말씀 & 본문", badge: "15", icon: "📖", defaultBg: "/images/presentation/frame-toys.jpg" },
+  { id: "message", title: "나눔 시간", badge: "15", icon: "📖", defaultBg: "/images/presentation/frame-toys.jpg" },
   { id: "prayer-song", title: "기도회 찬양", badge: "16", icon: "🕊️", defaultBg: "/images/presentation/bg-kindergarten.jpg" },
   { id: "community", title: "사랑방 가장 소개", badge: "17", icon: "💛", defaultBg: "/images/presentation/frame-toys.jpg" },
   { id: "ending", title: "엔딩 & 단체사진", badge: "18", icon: "🎉", defaultBg: "/images/presentation/bg-kindergarten.jpg" },
@@ -69,7 +69,7 @@ export const presentationTemplates = [
     src: "/images/presentation/frame-toys.jpg",
     badge: "참고1 시그니처",
     badgeColor: "bg-crayon-yellow text-black",
-    recommendedFor: "타임라인, 말씀, 사랑방 소개",
+    recommendedFor: "타임라인, 나눔 시간, 사랑방 소개",
   },
   {
     id: "kindergarten",

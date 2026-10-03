@@ -32,7 +32,7 @@ const SLIDES = [
   { no: "12", key: "sanghee-time", en: "SANGHEE TIME", ko: "상희 가장님 Time" },
   { no: "13", key: "recreation", en: "RECREATION", ko: "게임 배틀" },
   { no: "14", key: "worship", en: "WORSHIP", ko: "찬양 가사" },
-  { no: "15", key: "message", en: "MESSAGE", ko: "말씀 - 세상의 빛" },
+  { no: "15", key: "message", en: "MESSAGE", ko: "나눔 시간" },
   { no: "16", key: "prayer-song", en: "PRAYER WORSHIP", ko: "기도회 찬양" },
   { no: "17", key: "community", en: "COMMUNITY", ko: "사랑방 소개" },
   { no: "18", key: "ending", en: "ENDING", ko: "마무리 & 사진" },
