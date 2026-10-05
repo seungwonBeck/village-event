@@ -3,6 +3,8 @@ import "./globals.css";
 import { event } from "@/data/event";
 
 export const metadata: Metadata = {
+  // 검색엔진에 노출되지 않도록 색인과 링크 수집을 막는다
+  robots: { index: false, follow: false, nocache: true },
   title: `${event.title} - ${event.church} ${event.ministry}`,
   description: `${event.subTitle} | ${event.displayDate} ${event.location}`,
   manifest: "/manifest.json",

@@ -4,6 +4,12 @@
  */
 export const ADMIN_COOKIE = "admin_session";
 
+/**
+ * 사이트 비공개(종료) 여부
+ * 기본은 비공개이고, 환경 변수 SITE_CLOSED를 "false"로 두면 다시 공개된다.
+ */
+export const isSiteClosed = (): boolean => process.env.SITE_CLOSED !== "false";
+
 export const getAdminPassword = (): string => process.env.ADMIN_PASSWORD || "9965";
 
 // 쿠키에는 비밀번호 대신 해시값만 저장한다

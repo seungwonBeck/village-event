@@ -36,9 +36,10 @@ export default function AdminLoginPage() {
         .catch(() => ({ authed: false }));
 
       if (check.authed) {
-        // 쿼리의 next 경로(/admin 하위만 허용)로 이동
+        // 쿼리의 next 경로(사이트 안의 경로만 허용, //로 시작하는 외부 주소는 제외)로 이동
         const next = new URLSearchParams(window.location.search).get("next");
-        window.location.href = next && next.startsWith("/admin") ? next : "/admin";
+        const isSafe = !!next && next.startsWith("/") && !next.startsWith("//");
+        window.location.href = isSafe ? next : "/admin";
         return;
       }
 
